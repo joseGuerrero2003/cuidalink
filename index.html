@@ -1,0 +1,1175 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>CuidaLink</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Nunito:wght@400;600;700;800&display=swap">
+<style>
+/* Una columna de 560px. Paleta y tipografía del prototipo: fondo crema, verde azulado profundo, titulares serif. */
+:root{
+  --bg:#FAF6EA; --surface:#FFFEF9; --surface-2:#F1EBD9; --fg:#12292B; --muted:#546566; --line:#E6DEC6;
+  --brand:#005A62; --brand-line:#005A62; --on-brand:#FFFFFF; --brand-soft:#D8EAEA;
+  --hero-bg:#005A62; --hero-fg:#FFFFFF; --hero-card:rgba(255,255,255,.12); --hero-line:rgba(255,255,255,.38);
+  --accent:#F0B24A; --on-accent:#2B1E00;
+  --ok:#1B7A4B; --ok-bg:#DCF0E4; --warn:#7A4E00; --warn-bg:#FBEACB; --bad:#9C2227; --bad-bg:#FADFDF;
+  --focus:#0B5FFF; --shadow:0 2px 14px rgba(18,41,43,.08);
+  --f-display:'Fraunces',Georgia,serif; --f-body:'Nunito',system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0D1C1E; --surface:#152729; --surface-2:#1D3437; --fg:#E9F2F1; --muted:#A5BCBD; --line:#2A4549;
+    --brand-line:#6FB3BE; --brand-soft:#1D3A3E;
+    --ok:#7FD6AB; --ok-bg:#173A2B; --warn:#F3C676; --warn-bg:#3A2E10; --bad:#FF9EA1; --bad-bg:#3E1A1C;
+    --focus:#8DB4FF; --shadow:none; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0D1C1E; --surface:#152729; --surface-2:#1D3437; --fg:#E9F2F1; --muted:#A5BCBD; --line:#2A4549;
+  --brand-line:#6FB3BE; --brand-soft:#1D3A3E;
+  --ok:#7FD6AB; --ok-bg:#173A2B; --warn:#F3C676; --warn-bg:#3A2E10; --bad:#FF9EA1; --bad-bg:#3E1A1C;
+  --focus:#8DB4FF; --shadow:none; color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{min-height:100%}
+body{background:var(--bg);color:var(--fg);font:18px/1.5 var(--f-body);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0;margin:0}
+body[data-screen="landing"]{background:var(--hero-bg);color:var(--hero-fg)}
+h1,h2,h3{font-family:var(--f-display);font-weight:700;line-height:1.15;text-wrap:balance;margin:0}
+p{margin:0}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:6px}
+.wrap{max-width:560px;margin:0 auto;padding-block:16px 40px;display:flex;flex-direction:column;gap:18px}
+.wrap.has-nav{padding-bottom:110px}
+.stack{display:flex;flex-direction:column;gap:12px}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.between{justify-content:space-between}
+
+/* Entrada */
+.landing{max-width:560px;margin:0 auto;padding-block:40px 32px;display:flex;flex-direction:column;gap:28px;min-height:100svh}
+.brand{font-family:var(--f-display);font-weight:600;letter-spacing:.04em;font-size:20px}
+.landing h1{font-size:clamp(34px,9vw,46px)}
+.landing .lead{font-size:20px;opacity:.95}
+.roles{display:flex;flex-direction:column;gap:14px}
+.role{display:flex;gap:16px;align-items:center;text-align:left;text-decoration:none;color:var(--hero-fg);background:var(--hero-card);border:2px solid var(--hero-line);border-radius:20px;padding:18px 20px;min-height:96px}
+.role:hover{background:rgba(255,255,255,.2)}
+.role svg{flex:none;width:44px;height:44px}
+.role b{display:block;font-family:var(--f-display);font-size:22px;font-weight:700}
+.role span{display:block;font-size:17px;opacity:.92;line-height:1.35}
+.foot{margin-top:auto;display:flex;flex-direction:column;gap:10px;font-size:15px;opacity:.95}
+.chip-conn{display:inline-flex;gap:8px;align-items:center}
+.dot{width:10px;height:10px;border-radius:50%;background:#9FB8BB;display:inline-block}
+.dot.live{background:#35C27A}.dot.off{background:#E5484D}
+.linkbtn{background:none;border:0;padding:8px 0;text-decoration:underline;cursor:pointer;color:inherit;font-size:16px;text-align:left;min-height:44px}
+
+/* Estructura interna */
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.back{display:inline-flex;align-items:center;gap:6px;text-decoration:none;color:var(--brand-line);font-weight:700;min-height:44px}
+.pill-role{display:inline-flex;gap:8px;align-items:center;font-size:14px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;background:var(--brand);color:var(--on-brand);padding:6px 12px;border-radius:999px}
+.pill-role .dot{width:8px;height:8px}
+h1.page{font-size:34px}
+h2{font-size:26px}
+h3{font-size:19px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:20px;display:flex;flex-direction:column;gap:14px;box-shadow:var(--shadow)}
+.muted{color:var(--muted)}
+.small{font-size:15px}
+.big{font-size:23px;font-family:var(--f-display);font-weight:600}
+.banner{background:var(--warn-bg);color:var(--warn);border-radius:12px;padding:12px 14px;font-weight:700}
+.alert{background:var(--bad-bg);color:var(--bad);border:2px solid var(--bad);border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.state{border-radius:16px;padding:14px 16px;display:flex;flex-direction:column;gap:4px}
+.state.ok{background:var(--ok-bg);color:var(--ok)}
+.state.warn{background:var(--warn-bg);color:var(--warn)}
+.state b{font-size:20px}
+
+label,.lbl{font-weight:800;display:block;margin-bottom:6px}
+input[type=text],input[type=password],input[type=date],input[type=time],select,textarea{width:100%;min-height:52px;padding:10px 14px;border-radius:14px;border:2px solid var(--line);background:var(--surface);color:var(--fg)}
+textarea{min-height:96px;resize:vertical}
+input[data-pin]{letter-spacing:.4em;font-size:22px;text-align:center}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.grid2>*{min-width:0}
+.err{color:var(--bad);font-weight:800}
+.err:empty{display:none}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:56px;padding:12px 22px;border-radius:16px;border:2px solid var(--brand-line);background:var(--brand);color:var(--on-brand);font-weight:800;cursor:pointer;text-decoration:none}
+.btn:hover{filter:brightness(1.1)}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.btn.ghost{background:transparent;color:var(--fg);border-color:var(--line)}
+.btn.danger{background:var(--bad);border-color:var(--bad);color:#fff}
+.btn.accent{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.btn.block{width:100%}
+.btn.sm{min-height:44px;padding:8px 16px}
+.btn.huge{min-height:128px;font-size:28px;font-family:var(--f-display);border-radius:26px;flex-direction:column}
+.huge svg{width:46px;height:46px}
+
+/* Pestañas inferiores */
+.tabs{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);z-index:10;padding-bottom:env(safe-area-inset-bottom,0px)}
+.tabs-in{max-width:560px;margin:0 auto;display:flex}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 6px 9px;text-decoration:none;color:var(--muted);font-size:14px;font-weight:800;min-height:64px;position:relative}
+.tab svg{width:28px;height:28px}
+.tab[aria-current=page]{color:var(--brand-line)}
+.tab[aria-current=page]::before{content:"";position:absolute;top:0;left:30%;right:30%;height:3px;border-radius:0 0 3px 3px;background:var(--brand-line)}
+.badge[hidden]{display:none}
+.badge{position:absolute;top:6px;left:calc(50% + 8px);min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:var(--accent);color:var(--on-accent);font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center}
+
+/* Avatares y chips */
+.av{flex:none;width:44px;height:44px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:800;font-size:16px}
+.av.lg{width:56px;height:56px;font-size:20px}
+.chipst{font-size:14px;font-weight:800;padding:4px 10px;border-radius:999px;white-space:nowrap;background:var(--surface-2);color:var(--fg)}
+.chipst.soon{background:var(--warn-bg);color:var(--warn)}
+.chipst.live{background:var(--accent);color:var(--on-accent)}
+.chipst.late{background:var(--bad-bg);color:var(--bad)}
+.chipst.completada{background:var(--ok-bg);color:var(--ok)}
+.chipst.cancelada{background:var(--surface-2);color:var(--muted)}
+.chipst.nuevo{background:var(--brand);color:var(--on-brand)}
+.chipst.demo{background:transparent;border:1px dashed var(--line);color:var(--muted)}
+.ver{display:inline-flex;gap:4px;align-items:center;color:var(--ok);font-weight:800;font-size:14px}
+.ver svg{width:16px;height:16px}
+
+/* Siguiente visita */
+.hero{background:var(--brand);color:var(--on-brand);border-radius:24px;padding:22px;display:flex;flex-direction:column;gap:10px}
+.hero .k{font-size:15px;font-weight:700;opacity:.85;text-transform:uppercase;letter-spacing:.05em}
+.hero .t{font-family:var(--f-display);font-size:36px;font-weight:700;line-height:1.1}
+.hero .w{display:flex;gap:12px;align-items:center;background:rgba(255,255,255,.12);border-radius:16px;padding:12px}
+.hero a{color:inherit;font-weight:800}
+
+/* Tarjetas de visita */
+.dayh{font-family:var(--f-display);font-weight:600;font-size:19px;margin-top:6px}
+.dayh small{font-family:var(--f-body);font-weight:600;color:var(--muted);font-size:15px;margin-left:6px}
+.visit{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:14px;display:flex;gap:14px;box-shadow:var(--shadow)}
+.visit.nuevo{border-color:var(--brand-line);box-shadow:0 0 0 3px var(--brand-soft)}
+.visit.cancelada{opacity:.75}
+.vdate{flex:none;width:62px;border-radius:14px;background:var(--brand-soft);color:var(--brand-line);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px 0;line-height:1.05;font-weight:800;text-transform:uppercase;font-size:13px;align-self:flex-start}
+.vdate b{font-family:var(--f-display);font-size:28px}
+.vbody{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px}
+.vtop{display:flex;justify-content:space-between;gap:8px;align-items:flex-start;flex-wrap:wrap}
+.vhora{font-family:var(--f-display);font-size:20px;font-weight:600}
+.vwho{display:flex;gap:10px;align-items:center;background:var(--surface-2);border-radius:14px;padding:8px 10px}
+.vwho .av{width:38px;height:38px;font-size:14px}
+.vwho b{display:block;line-height:1.2}
+.empty{border:2px dashed var(--line);border-radius:18px;padding:20px;color:var(--muted);text-align:center}
+.confirm{background:var(--surface-2);border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:10px}
+
+/* Asistente de agendar */
+.steps{display:flex;gap:8px}
+.steps span{flex:1;height:6px;border-radius:3px;background:var(--line)}
+.steps span.on{background:var(--brand)}
+.stephead{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.svc{display:flex;gap:14px;align-items:center;width:100%;text-align:left;background:var(--surface);border:2px solid var(--line);border-radius:18px;padding:14px 16px;min-height:76px;cursor:pointer}
+.svc[aria-checked=true],.comp[aria-checked=true]{border-color:var(--brand-line);background:var(--brand-soft)}
+.svc svg{flex:none;width:34px;height:34px;color:var(--brand-line)}
+.svc b{display:block}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.pickchip{min-height:48px;padding:8px 16px;border-radius:999px;border:2px solid var(--line);background:var(--surface);font-weight:800;cursor:pointer}
+.pickchip[aria-pressed=true]{background:var(--brand);border-color:var(--brand);color:var(--on-brand)}
+.stepper{display:flex;align-items:center;gap:14px}
+.stepper button{width:52px;height:52px;border-radius:50%;border:2px solid var(--brand-line);background:var(--surface);font-size:26px;font-weight:800;cursor:pointer;line-height:1}
+.stepper button:disabled{opacity:.4;cursor:not-allowed}
+.stepper output{font-family:var(--f-display);font-size:24px;font-weight:600;min-width:110px;text-align:center}
+.comp{display:flex;gap:12px;align-items:center;width:100%;text-align:left;background:var(--surface);border:2px solid var(--line);border-radius:18px;padding:12px 14px;cursor:pointer;min-height:76px}
+.comp:disabled{opacity:.55;cursor:not-allowed}
+.comp .info{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.comp .km{font-weight:800;white-space:nowrap;text-align:right;font-size:15px}
+.tag{font-size:13px;font-weight:800;padding:2px 8px;border-radius:999px;background:var(--accent);color:var(--on-accent);margin-left:8px;white-space:nowrap}
+.total{display:flex;justify-content:space-between;align-items:baseline;gap:12px;background:var(--surface-2);border-radius:16px;padding:14px 16px}
+.total b{font-family:var(--f-display);font-size:28px}
+.summary{background:var(--brand-soft);border-radius:16px;padding:14px 16px;display:flex;flex-direction:column;gap:4px}
+
+/* Pagos (como el prototipo) */
+.earn{background:var(--brand);color:var(--on-brand);border-radius:28px;padding:24px;display:flex;flex-direction:column;gap:6px}
+.earn .k{font-size:19px;opacity:.9;font-weight:600}
+.earn .n{font-size:clamp(40px,11vw,52px);font-weight:800;line-height:1.1}
+.earn .s{font-size:17px;opacity:.92}
+.paylist{background:var(--surface);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);overflow:hidden}
+.pay{display:flex;justify-content:space-between;gap:12px;padding:16px 20px;align-items:center}
+.pay+.pay{border-top:1px solid var(--line)}
+.pay b.d{display:block;font-size:19px}
+.pay .amt{text-align:right}
+.pay .amt b{display:block;color:var(--ok);font-size:19px;font-weight:800;white-space:nowrap}
+.pay .amt{flex:none}
+.pay .amt small{color:var(--muted);font-size:15px}
+.monthh{display:flex;justify-content:space-between;padding:12px 20px;background:var(--surface-2);font-weight:800;font-size:15px;color:var(--muted)}
+.nextpay{display:flex;justify-content:space-between;gap:12px;align-items:center;background:var(--surface);border:1px dashed var(--brand-line);border-radius:18px;padding:12px 16px}
+
+.toast{width:max-content;position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom,0px));background:var(--fg);color:var(--bg);padding:14px 20px;border-radius:16px;font-weight:800;max-width:calc(100vw - 32px);z-index:30;box-shadow:0 6px 24px rgba(0,0,0,.25)}
+.toast.bad{background:var(--bad);color:#fff}
+body[data-screen="landing"] .toast,body[data-screen="adulto"] .toast{bottom:calc(20px + env(safe-area-inset-bottom,0px))}
+@media (max-width:420px){.grid2{grid-template-columns:1fr}.visit{padding:12px;gap:10px}.vdate{width:54px}}
+@media (prefers-reduced-motion:no-preference){
+  .role,.btn,.svc,.comp,.pickchip{transition:background .15s,filter .15s,border-color .15s}
+  .visit.nuevo{animation:pop .6s ease-out}
+  @keyframes pop{from{transform:scale(.97);opacity:.4}to{transform:none;opacity:1}}
+}
+</style>
+
+<div id="app"></div>
+<div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+<script>/* CuidaLink · almacén local (sin cuentas). Misma API que la base de datos del prototipo; guarda en este celular. */
+(function(){
+var KEY='cuidalink_db_v1',SEED='cuidalink_seed_v1',lis=[];
+var mem=null;
+function load(){if(mem)return mem;try{mem=JSON.parse(localStorage.getItem(KEY)||'{}');}catch(e){mem={};}return mem;}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(mem));}catch(e){}}
+function clone(x){return JSON.parse(JSON.stringify(x));}
+function now(){return Date.now().toString(36)+Math.random().toString(36).slice(2,8);}
+function seed(){
+  var s=load();var done=false;try{done=localStorage.getItem(SEED)==='1';}catch(e){}
+  if(done)return;
+  var S={"acompanantes/a1": {"anos": 6, "barrio": "Ciudad Jardín", "codigo": "ACM-4107", "nombre": "Marta Lucía Rojas", "rating": 4.9, "verificado": true, "visitas": 128}, "credenciales/a1": {"bloqueadoHasta": 0, "creada": "2026-11-20T04:22:39.000Z", "hash": "16e3f6ae0fac3c0f1a060015c6ecff063a09c23a98287122c14f75f7ee3b2bd6", "intentos": 0, "iter": 150000, "salt": "3f2d2342490ddb34eade543496c2aca5"}, "acompanantes/a2": {"anos": 3, "barrio": "San Fernando", "codigo": "ACM-2386", "nombre": "Camila Restrepo", "rating": 4.8, "verificado": true, "visitas": 74}, "credenciales/a2": {"bloqueadoHasta": 0, "creada": "2026-11-20T04:22:39.000Z", "hash": "933566d07c0065ff058e0e9ff2e003fe320e947e42e5c7579aa1bc657c0cc6c9", "intentos": 0, "iter": 150000, "salt": "0582e9c0d300cab9b2317d855fe85b1f"}, "acompanantes/a3": {"anos": 8, "barrio": "Valle del Lili", "codigo": "ACM-7721", "nombre": "Luz Dary Mosquera", "rating": 4.9, "verificado": true, "visitas": 201}, "credenciales/a3": {"bloqueadoHasta": 0, "creada": "2026-11-20T04:22:39.000Z", "hash": "c34ee5f6106a3f947c50d614cfc521260d486dfc234f2348ccd2982f942e5d89", "intentos": 0, "iter": 150000, "salt": "de7f0e50e70c39db2419c8c1641b1d25"}, "acompanantes/a4": {"anos": 2, "barrio": "Granada", "codigo": "ACM-5093", "nombre": "Julián Cárdenas", "rating": 4.7, "verificado": true, "visitas": 52}, "credenciales/a4": {"bloqueadoHasta": 0, "creada": "2026-11-20T04:22:39.000Z", "hash": "1c332759786c0123b82242ad5aa24888a9a05a0706eb14db94fa5b96c0a73305", "intentos": 0, "iter": 150000, "salt": "614150439bb315ca690cd55fae454a41"}, "acompanantes/a5": {"anos": 5, "barrio": "El Peñón", "codigo": "ACM-3318", "nombre": "Paola Andrade", "rating": 5, "verificado": true, "visitas": 96}, "credenciales/a5": {"bloqueadoHasta": 0, "creada": "2026-11-20T04:22:39.000Z", "hash": "fde1859d22481fdd94964cbe94a5c9e9b29ded1bbe27da20721e303b9038ed36", "intentos": 0, "iter": 150000, "salt": "aef5aabf7c839ee12a8f1035723c5e18"}, "acompanantes/a6": {"anos": 7, "barrio": "Chipichape", "codigo": "ACM-8264", "nombre": "Yeny Carabalí", "rating": 4.8, "verificado": true, "visitas": 143}, "credenciales/a6": {"bloqueadoHasta": 0, "creada": "2026-11-20T04:22:39.000Z", "hash": "dd35bca1a28498377ce1705f03bc6208c4f7afb970db7ca0e2bb33682b50386a", "intentos": 0, "iter": 150000, "salt": "966c4bc0771e51eeecc91c09ac71eb6c"}, "acompanantes/a7": {"anos": 2, "barrio": "Pance", "codigo": "ACM-6150", "nombre": "Sebastián Aragón", "rating": 4.6, "verificado": true, "visitas": 38}, "credenciales/a7": {"bloqueadoHasta": 0, "creada": "2026-11-20T04:22:39.000Z", "hash": "75f26a407048a0d63174038ea31b8ab6add2f0331cb867ac639cbf7335cae7e1", "intentos": 0, "iter": 150000, "salt": "8b5095ff54dc2c08ca8b56226a0fcf5a"}, "acompanantes/a8": {"anos": 9, "barrio": "Centro", "codigo": "ACM-1975", "nombre": "Rosa Elena Vélez", "rating": 4.9, "verificado": true, "visitas": 167}, "credenciales/a8": {"bloqueadoHasta": 0, "creada": "2026-11-20T04:22:39.000Z", "hash": "1e03e4d0ecd2018d430e1eb3ce1506650c162d468bf67769d9ece3c6a4ebdcd2", "intentos": 0, "iter": 150000, "salt": "bdf1944df5f7632ce0afb55d7a878f1e"}, "visitas/demo1": {"acompId": "a1", "acompanante": "Marta Lucía Rojas", "barrio": "Ciudad Jardín", "creada": "2026-10-30T15:00:00.000Z", "demo": true, "estado": "completada", "fecha": "2026-11-02", "hid": "demo", "hora": "09:00", "horas": 3, "llegada": "2026-11-02T14:02:00.000Z", "nota": "Caminamos por el parque y tomamos tinto.", "pagoAcomp": 38250, "precio": 45000, "salida": "2026-11-02T17:03:00.000Z", "tipo": "caminata"}, "visitas/demo2": {"acompId": "a1", "acompanante": "Marta Lucía Rojas", "barrio": "Ciudad Jardín", "creada": "2026-11-02T15:00:00.000Z", "demo": true, "estado": "completada", "fecha": "2026-11-04", "hid": "demo", "hora": "14:00", "horas": 2, "llegada": "2026-11-04T19:00:00.000Z", "nota": "Cita de control sin novedades. Ya está en casa.", "pagoAcomp": 25500, "precio": 30000, "salida": "2026-11-04T21:01:00.000Z", "tipo": "cita"}};for(var k in S)s[k]=S[k];save();try{localStorage.setItem(SEED,'1');}catch(e){}
+}
+function inCol(col){var s=load(),o=[];for(var p in s){var a=p.split('/');if(a.length===2&&a[0]===col)o.push({id:a[1],data:s[p]});}return o;}
+function match(d,wh){for(var i=0;i<wh.length;i++){if(d[wh[i][0]]!==wh[i][2])return false;}return true;}
+function snapOf(rows,prev){
+  var docs=rows.map(function(r){return {id:r.id,exists:true,data:function(){return clone(r.data);}};});
+  return {docs:docs,empty:!docs.length,size:docs.length,docChanges:function(){var out=[];docs.forEach(function(d){if(!prev||!prev[d.id])out.push({type:'added',doc:d});});return out;}};
+}
+function notify(){lis.slice().forEach(function(l){l();});}
+function docRef(path){
+  var id=path.split('/')[1];
+  function snap(){var s=load();var ex=Object.prototype.hasOwnProperty.call(s,path);return {id:id,exists:ex,data:function(){return ex?clone(s[path]):undefined;}};}
+  return {id:id,path:path,
+    get:function(){return Promise.resolve(snap());},
+    set:function(d){load()[path]=clone(d);save();notify();return Promise.resolve();},
+    update:function(d){var s=load();if(!s[path])return Promise.reject(new Error('not_found'));Object.assign(s[path],clone(d));save();notify();return Promise.resolve();},
+    delete:function(){delete load()[path];save();notify();return Promise.resolve();},
+    onSnapshot:function(fn){var last=null;function run(){var sn=snap();var j=JSON.stringify(sn.exists?sn.data():null);if(j!==last){last=j;fn(sn);}}
+      lis.push(run);setTimeout(run,0);return function(){var i=lis.indexOf(run);if(i>=0)lis.splice(i,1);};}};
+}
+function colRef(col,wh){
+  wh=wh||[];
+  function rows(){return inCol(col).filter(function(r){return match(r.data,wh);});}
+  return {id:col,
+    where:function(f,o,v){return colRef(col,wh.concat([[f,o,v]]));},
+    orderBy:function(){return colRef(col,wh);},limit:function(){return colRef(col,wh);},
+    doc:function(id){return docRef(col+'/'+id);},
+    add:function(d){var id=now();load()[col+'/'+id]=clone(d);save();notify();return Promise.resolve(docRef(col+'/'+id));},
+    get:function(){return Promise.resolve(snapOf(rows()));},
+    onSnapshot:function(fn){var last=null,prev=null;function run(){var r=rows();var j=JSON.stringify(r);if(j!==last){last=j;var sn=snapOf(r,prev);prev={};r.forEach(function(x){prev[x.id]=1;});fn(sn);}}
+      lis.push(run);setTimeout(run,0);return function(){var i=lis.indexOf(run);if(i>=0)lis.splice(i,1);};}};
+}
+window.addEventListener('storage',function(e){if(e.key===KEY){mem=null;notify();}});
+setInterval(notify,2000);
+seed();
+var db={doc:docRef,collection:function(n){return colRef(n);}};
+window.claude={use:function(n){return Promise.resolve(n==='db'?db:null);}};
+})();
+</script><script>
+(function(){
+'use strict';
+
+/* ===== Configuración de negocio (un solo lugar) ===== */
+var COMISION=0.15; /* Comisión de la plataforma según el modelo financiero: el acompañante recibe el 85 % de cada visita */
+var TIPOS={
+  compania:{nombre:'Compañía en casa',desc:'Conversar, acompañar, juegos',porHora:15000,ico:'home'},
+  caminata:{nombre:'Caminata y compañía',desc:'Paseo corto y buena charla',porHora:15000,ico:'walk'},
+  cita:{nombre:'Cita médica',desc:'Ida, espera y regreso',porHora:15000,ico:'med'},
+  diligencia:{nombre:'Diligencias y compras',desc:'Mercado, farmacia, trámites',porHora:20000,ico:'bag'},
+  otra:{nombre:'Otra necesidad',desc:'Tú decides: cuéntanos qué necesitas',porHora:15000,ico:'star'}
+};
+var LEGACY={normal:'compania'};
+var BARRIOS={ /* Centros aproximados por barrio de Cali [lat, lng] */
+  'Aguablanca':[3.4200,-76.4950],'Cañasgordas':[3.3400,-76.5500],'Centro':[3.4516,-76.5320],'Chipichape':[3.4780,-76.5300],
+  'Ciudad Jardín':[3.3600,-76.5420],'El Peñón':[3.4520,-76.5420],'Granada':[3.4590,-76.5290],'Limonar':[3.3880,-76.5430],
+  'Meléndez':[3.3800,-76.5600],'Pance':[3.3250,-76.5400],'Prados del Norte':[3.4850,-76.5230],'San Fernando':[3.4285,-76.5430],
+  'Santa Mónica':[3.4780,-76.5440],'Tequendama':[3.4290,-76.5390],'Valle del Lili':[3.3730,-76.5290],'Versalles':[3.4660,-76.5340]
+};
+var DEMO_VISITAS=[
+  {id:'demo1',fecha:'2026-11-02',hora:'09:00',horas:3,tipo:'caminata',acompId:'a1',acompanante:'Marta Lucía Rojas',precio:45000,pagoAcomp:38250,llegada:'2026-11-02T14:02:00.000Z',salida:'2026-11-02T17:03:00.000Z',nota:'Caminamos por el parque y tomamos tinto.',creada:'2026-10-30T15:00:00.000Z'},
+  {id:'demo2',fecha:'2026-11-04',hora:'14:00',horas:2,tipo:'cita',acompId:'a1',acompanante:'Marta Lucía Rojas',precio:30000,pagoAcomp:25500,llegada:'2026-11-04T19:00:00.000Z',salida:'2026-11-04T21:01:00.000Z',nota:'Cita de control sin novedades. Ya está en casa.',creada:'2026-11-02T15:00:00.000Z'}
+];
+
+var ROLES=['familiar','adulto','acompanante'];
+var TABS={
+  familiar:[['inicio','Inicio','home'],['agendar','Agendar','plus'],['visitas','Visitas','list']],
+  acompanante:[['agenda','Agenda','cal'],['pagos','Mis pagos','wallet']],
+  adulto:[]
+};
+
+var ICON={
+  familiar:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 22 24 7l18 15"/><path d="M11 20v21h26V20"/><path d="M20 41V29h8v12"/></svg>',
+  adulto:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M24 41S6 30 6 17a9 9 0 0 1 18-3 9 9 0 0 1 18 3c0 13-18 24-18 24Z"/></svg>',
+  acompanante:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="8" width="30" height="34" rx="4"/><path d="M17 8V5h14v3"/><path d="m16 25 5 5 11-12"/></svg>',
+  ok:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="24" cy="24" r="18"/><path d="m15 25 7 7 12-14"/></svg>',
+  help:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M24 6 3 42h42Z"/><path d="M24 20v11"/><path d="M24 36v.5"/></svg>'
+};
+function ico(n){
+  var p={
+    home:'<path d="M3 11 12 4l9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/>',
+    plus:'<circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/>',
+    list:'<path d="M8 6h13M8 12h13M8 18h13"/><path d="M3.5 6h.01M3.5 12h.01M3.5 18h.01"/>',
+    cal:'<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/>',
+    wallet:'<path d="M4 7a2 2 0 0 1 2-2h11v3"/><rect x="3" y="7" width="18" height="13" rx="3"/><path d="M16 13.5h2.5"/>',
+    walk:'<circle cx="13" cy="4.5" r="1.8"/><path d="m9 21 2.5-6 2.5 2v4"/><path d="m11.5 15 .5-5 3 2 2 1.5"/><path d="m12 10-3 1-1.5 3"/>',
+    med:'<rect x="4" y="5" width="16" height="15" rx="3"/><path d="M12 9v7M8.5 12.5h7"/><path d="M9 5V3h6v2"/>',
+    bag:'<path d="M5 8h14l-1 12H6L5 8Z"/><path d="M9 8a3 3 0 0 1 6 0"/>',
+    shield:'<path d="M12 3 5 6v5c0 4.5 3 8 7 10 4-2 7-5.5 7-10V6l-7-3Z"/><path d="m9 12 2 2 4-4"/>',
+    star:'<path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9L12 3Z"/>',
+    pin:'<path d="M12 21s7-6 7-11a7 7 0 0 0-14 0c0 5 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/>'
+  }[n]||'';
+  return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+p+'</svg>';
+}
+
+/* ===== Estado ===== */
+var state={
+  db:null,conn:'connecting',
+  loaded:{adulto:false,visitas:false,ayuda:false,checkins:false,acomp:false,audit:false},
+  adulto:{nombre:'',barrio:''},visitas:[],ayudas:[],checkins:[],acomps:[],audit:[],famCred:undefined,pair:undefined
+};
+var drafts={};
+var route={role:null,tab:null};
+var ui={codigoHogar:null,confirmAyuda:false,editPerfil:false,resetAsk:false,msgAdulto:'',cancelId:null,nuevaId:null,scrollTo:null,barrioSel:'',masAcomps:false,wizErr:''};
+var wz={step:1,tipo:'compania',fecha:'',hora:'',horas:2,acomp:null,detalle:'',pedido:''};
+var first={ayuda:true,checkins:true};
+var unsubs=[],subKey=null;
+/* Cada celular que entra como familia crea su propio hogar: sus datos no se mezclan con los de otras familias */
+function ls(k,v){try{if(v===undefined)return localStorage.getItem(k);if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,v);}catch(e){}return null;}
+function famHid(){return ls('cuidalink_fam');}
+function adultoHid(){try{var o=JSON.parse(ls('cuidalink_adulto')||'null');return o&&o.hid||null;}catch(e){return null;}}
+function hid(){return route.role==='adulto'?adultoHid():route.role==='familiar'?famHid():null;}
+function byCreada(a,b){return a.creada<b.creada?1:a.creada>b.creada?-1:0;}
+
+
+/* ===== Seguridad: PIN con hash, bloqueo por intentos, sesión con vencimiento, vinculación del adulto, bitácora ===== */
+var ITER=150000,MAXINT=5,BLOQUEO_MS=5*60*1000;
+var IDLE={familiar:10*60*1000,acompanante:5*60*1000};
+var session=null;
+try{var raw0=sessionStorage.getItem('cuidalink_s');if(raw0){var s0=JSON.parse(raw0);if(s0&&s0.exp>Date.now()&&(s0.role==='familiar'||s0.role==='acompanante'))session=s0;}}catch(e){}
+function saveSession(){try{if(session)sessionStorage.setItem('cuidalink_s',JSON.stringify(session));else sessionStorage.removeItem('cuidalink_s');}catch(e){}}
+function authed(role){return !!(session&&session.role===role&&session.exp>Date.now()&&(role!=='familiar'||!!famHid()));}
+function startSession(role,id){session={role:role,id:id||null,exp:Date.now()+IDLE[role]};saveSession();}
+function touch(){if(session)session.exp=Date.now()+IDLE[session.role];}
+function hex(buf){return Array.prototype.map.call(new Uint8Array(buf),function(b){return ('0'+b.toString(16)).slice(-2);}).join('');}
+function unhex(h){var a=new Uint8Array(h.length/2);for(var i=0;i<a.length;i++)a[i]=parseInt(h.substr(i*2,2),16);return a;}
+function randHex(n){return hex(crypto.getRandomValues(new Uint8Array(n)));}
+function randPin(){var a=new Uint32Array(1);do{crypto.getRandomValues(a);}while(a[0]>=4294000000);return String(100000+a[0]%900000);}
+function derive(pin,saltHex,iter){
+  return crypto.subtle.importKey('raw',new TextEncoder().encode(pin),'PBKDF2',false,['deriveBits'])
+    .then(function(k){return crypto.subtle.deriveBits({name:'PBKDF2',hash:'SHA-256',salt:unhex(saltHex),iterations:iter},k,256);}).then(hex);
+}
+function ctEq(a,b){if(a.length!==b.length)return false;var r=0;for(var i=0;i<a.length;i++)r|=a.charCodeAt(i)^b.charCodeAt(i);return r===0;}
+function pinDebil(p){return /^(\d)\1+$/.test(p)||'01234567890'.indexOf(p)>=0||'09876543210'.indexOf(p)>=0;}
+function makeCred(pin){var salt=randHex(16);return derive(pin,salt,ITER).then(function(h){return {salt:salt,hash:h,iter:ITER,intentos:0,bloqueadoHasta:0,creada:nowISO()};});}
+function delay(ms){return new Promise(function(r){setTimeout(r,ms);});}
+function verifyCred(credId,pin){
+  var ref=state.db.doc('credenciales/'+credId);
+  return ref.get().then(function(sn){
+    if(!sn.exists)return {ok:false,tipo:'sin'};
+    var d=sn.data();
+    if(d.bloqueadoHasta&&d.bloqueadoHasta>Date.now())return {ok:false,tipo:'bloqueado',min:Math.ceil((d.bloqueadoHasta-Date.now())/60000)};
+    return derive(pin,d.salt,d.iter).then(function(h){
+      if(ctEq(h,d.hash)){if(d.intentos)ref.update({intentos:0,bloqueadoHasta:0}).catch(function(){});return {ok:true};}
+      var n=(d.intentos||0)+1,lock=n>=MAXINT;
+      return ref.update(lock?{intentos:0,bloqueadoHasta:Date.now()+BLOQUEO_MS}:{intentos:n}).catch(function(){}).then(function(){return lock?{ok:false,tipo:'bloqueado',min:5}:{ok:false,tipo:'mal',quedan:MAXINT-n};});
+    });
+  });
+}
+function msgAuth(r){
+  if(r.tipo==='bloqueado')return 'Demasiados intentos fallidos. Acceso bloqueado por '+r.min+' min.';
+  if(r.tipo==='mal')return 'Código o PIN incorrectos.'+(r.quedan!=null&&r.quedan<=2?' Te quedan '+r.quedan+(r.quedan===1?' intento.':' intentos.'):'');
+  return 'Código o PIN incorrectos.';
+}
+var AUD={acomp_login:'Acompañante inició sesión',acomp_fail:'Intento fallido de acceso de acompañante',fam_login:'La familia inició sesión',fam_fail:'Intento fallido de acceso de la familia',visita_creada:'Visita agendada',visita_cancelada:'Visita cancelada',llegada:'Llegada registrada',salida:'Visita terminada',hogar_nuevo:'Nuevo código de vinculación generado',pareado:'Celular del adulto vinculado',pareo_fail:'Intento fallido de vinculación'};
+function audit(tipo,detalle){
+  if(!state.db)return;
+  state.db.collection('auditoria').add({hid:hid()||'',tipo:tipo,detalle:String(detalle||'').slice(0,100),creada:nowISO()}).catch(function(){});
+}
+function logout(msg){
+  session=null;saveSession();ui.codigoHogar=null;ui.resetAsk=false;
+  if(location.hash==='#'||location.hash==='')render();else location.hash='#';
+  if(msg)toast(msg);
+}
+function pinField(id,label,hint){return '<div><label for="'+id+'">'+label+'</label><input id="'+id+'" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="6" autocomplete="off" data-pin="1" placeholder="••••••">'+(hint?'<p class="muted small" style="margin-top:6px">'+hint+'</p>':'')+'</div>';}
+
+/* ===== Utilidades ===== */
+function $(s,r){return (r||document).querySelector(s);}
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function pad(n){return n<10?'0'+n:''+n;}
+function localDate(d){d=d||new Date();return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());}
+function nowISO(){return new Date().toISOString();}
+function money(n){return '$'+String(Math.round(Number(n)||0)).replace(/\B(?=(\d{3})+(?!\d))/g,'.')+' COP';}
+function cap(s){return s.charAt(0).toUpperCase()+s.slice(1);}
+function tipoDe(k){return TIPOS[k]||TIPOS[LEGACY[k]]||TIPOS.compania;}
+function precio(tipo,horas){return tipoDe(tipo).porHora*horas;}
+function ganancia(v){return v.pagoAcomp!=null?Number(v.pagoAcomp):Math.round((Number(v.precio)||0)*(1-COMISION));}
+function pctAcomp(){return Math.round((1-COMISION)*100);}
+function startMs(v){return new Date(v.fecha+'T'+v.hora+':00').getTime();}
+function endMs(v){return startMs(v)+Number(v.horas)*3600000;}
+function sortKey(v){return v.fecha+' '+v.hora;}
+function byStart(a,b){return sortKey(a)<sortKey(b)?-1:sortKey(a)>sortKey(b)?1:0;}
+function horaTxt(hhmm){
+  var p=hhmm.split(':'),h=parseInt(p[0],10),m=p[1]||'00';
+  var suf=h>=12?'p.m.':'a.m.';var h12=h%12===0?12:h%12;
+  return h12+':'+m+' '+suf;
+}
+function rangoTxt(v){
+  var p=v.hora.split(':'),h=parseInt(p[0],10)+Number(v.horas),m=p[1];
+  var fin=(h>=24?'23':pad(h))+':'+(h>=24?'59':m);
+  return horaTxt(v.hora)+' – '+horaTxt(fin);
+}
+function fechaLarga(f){var d=new Date(f+'T12:00:00');return cap(d.toLocaleDateString('es-CO',{weekday:'long',day:'numeric',month:'long'}).replace(',',''));}
+function fechaPago(f){var d=new Date(f+'T12:00:00');return cap(d.toLocaleDateString('es-CO',{weekday:'long',day:'numeric',month:'long'}).replace(',',''));}
+function diasHasta(f){return Math.round((new Date(f+'T00:00:00').getTime()-new Date(localDate()+'T00:00:00').getTime())/864e5);}
+function etiquetaDia(f){var n=diasHasta(f);return n===0?'Hoy':n===1?'Mañana':n===-1?'Ayer':fechaLarga(f);}
+function fmtTime(iso){return new Date(iso).toLocaleTimeString('es-CO',{hour:'numeric',minute:'2-digit'});}
+function hace(iso){
+  var m=Math.round((Date.now()-new Date(iso).getTime())/60000);
+  if(m<1)return 'hace un momento';
+  if(m<60)return 'hace '+m+' min';
+  var h=Math.floor(m/60);
+  if(h<24)return 'hace '+h+(h===1?' hora':' horas');
+  var d=Math.floor(h/24);
+  return 'hace '+d+(d===1?' día':' días');
+}
+function faltan(v){
+  if(v.estado==='en_curso')return {t:'En curso',c:'live'};
+  var ms=startMs(v)-Date.now();
+  if(ms<=0)return Date.now()<endMs(v)?{t:'Ya es la hora',c:'live'}:{t:'Sin iniciar',c:'late'};
+  var m=Math.ceil(ms/60000);
+  if(m<60)return {t:'Faltan '+m+' min',c:'soon'};
+  var h=Math.floor(m/60),mm=m%60;
+  if(h<24)return {t:'Faltan '+h+' h'+(mm?' '+mm+' min':''),c:h<3?'soon':''};
+  var d=Math.floor(h/24),hh=h%24;
+  return {t:'Faltan '+d+(d===1?' día':' días')+(hh&&d<3?' '+hh+' h':''),c:''};
+}
+function haversine(a,b){
+  var R=6371,r=Math.PI/180,dl=(b[0]-a[0])*r,dg=(b[1]-a[1])*r;
+  var x=Math.sin(dl/2)*Math.sin(dl/2)+Math.cos(a[0]*r)*Math.cos(b[0]*r)*Math.sin(dg/2)*Math.sin(dg/2);
+  return 2*R*Math.asin(Math.sqrt(x));
+}
+function kmTxt(d){return d<0.3?'En el mismo barrio':d<1?'a '+(Math.max(1,Math.round(d*10))*100)+' m':'a '+d.toFixed(1).replace('.',',')+' km';}
+function distancia(barrioA,barrioB){
+  var a=BARRIOS[barrioA],b=BARRIOS[barrioB];
+  if(!a||!b)return null;
+  return haversine(a,b);
+}
+function avatar(nombre,cls){
+  var n=nombre||'?',ini=n.split(/\s+/).filter(Boolean).slice(0,2).map(function(w){return w.charAt(0);}).join('').toUpperCase();
+  var h=0;for(var i=0;i<n.length;i++)h=(h*31+n.charCodeAt(i))%360;
+  return '<span class="av '+(cls||'')+'" style="background:hsl('+h+' 35% 86%);color:hsl('+h+' 50% 22%)" aria-hidden="true">'+esc(ini)+'</span>';
+}
+function acompDe(id){for(var i=0;i<state.acomps.length;i++)if(state.acomps[i].id===id)return state.acomps[i];return null;}
+function nombreAdulto(){return (state.adulto&&state.adulto.nombre)||'';}
+function barrioAdulto(){return (state.adulto&&state.adulto.barrio)||'';}
+function perfilListo(){return !!(nombreAdulto()&&BARRIOS[barrioAdulto()]);}
+function mapDocs(s){return s.docs.map(function(d){return Object.assign({},d.data(),{id:d.id});});} /* los datos del snapshot vienen congelados: siempre se copian */
+function activa(v){return v.estado==='agendada'||v.estado==='en_curso';}
+
+var toastTimer=null;
+function toast(msg,kind){
+  var t=$('#toast');t.textContent=msg;t.className='toast'+(kind==='bad'?' bad':'');t.hidden=false;
+  clearTimeout(toastTimer);toastTimer=setTimeout(function(){t.hidden=true;},4200);
+}
+function parseRoute(){
+  var parts=location.hash.replace('#','').split('/');
+  var r=ROLES.indexOf(parts[0])>=0?parts[0]:null,tab=null;
+  if(r&&TABS[r].length){
+    tab=TABS[r][0][0];
+    for(var i=0;i<TABS[r].length;i++)if(TABS[r][i][0]===parts[1])tab=parts[1];
+  }
+  return {role:r,tab:tab};
+}
+function go(h){if(location.hash==='#'+h)render();else location.hash='#'+h;}
+
+/* ===== Estructura ===== */
+function landing(){
+  return '<main class="landing">'+
+    '<p class="brand">CuidaLink</p>'+
+    '<div class="stack"><h1>Cuidar juntos, aunque estés lejos.</h1><p class="lead">¿Quién eres? Toca tu opción para entrar.</p></div>'+
+    '<nav class="roles" aria-label="Elige tu rol">'+
+      '<a class="role" href="#familiar">'+ICON.familiar+'<div><b>Soy familiar</b><span>Agenda visitas y revisa cómo está tu ser querido.</span></div></a>'+
+      '<a class="role" href="#adulto">'+ICON.adulto+'<div><b>Soy el adulto mayor</b><span>Pide ayuda y avisa a tu familia que estás bien.</span></div></a>'+
+      '<a class="role" href="#acompanante">'+ICON.acompanante+'<div><b>Soy acompañante</b><span>Mira tu agenda, registra tus visitas y tus pagos.</span></div></a>'+
+    '</nav>'+
+    '<div class="foot"><span class="chip-conn" id="conn"><span class="dot"></span><span>Conectando…</span></span><span>Acceso protegido: cada rol requiere PIN o vinculación. Versión de demostración: los acompañantes y las visitas de ejemplo no son personas reales.</span></div>'+
+  '</main>';
+}
+function shell(){
+  var titulos={familiar:'Familiar',adulto:'Adulto mayor',acompanante:'Acompañante'};
+  var gated=!!gateName(),tabs=gated?[]:TABS[route.role];
+  var nav='';
+  if(tabs.length){
+    nav='<nav class="tabs" aria-label="Secciones"><div class="tabs-in">'+tabs.map(function(t){
+      return '<a class="tab" href="#'+route.role+'/'+t[0]+'"'+(route.tab===t[0]?' aria-current="page"':'')+'>'+ico(t[2])+'<span>'+t[1]+'</span>'+(t[0]==='visitas'?'<span class="badge" id="badge-visitas" hidden></span>':'')+'</a>';
+    }).join('')+'</div></nav>';
+  }
+  return '<main class="wrap'+(tabs.length?' has-nav':'')+'">'+
+    '<div class="top">'+(!gated&&session?'<button class="back linkbtn" type="button" data-act="logout" style="text-decoration:none">← Cerrar sesión</button>':'<a class="back" href="#">← Cambiar de rol</a>')+'<span class="pill-role"><span class="dot" id="pill-dot"></span>'+titulos[route.role]+'</span></div>'+
+    '<div id="banner"></div>'+
+    '<div id="view" class="stack" style="gap:18px"></div>'+
+  '</main>'+nav;
+}
+
+/* ===== Perfil del adulto mayor (nombre + barrio) ===== */
+function perfilForm(){
+  var n=nombreAdulto(),b=ui.barrioSel||barrioAdulto();
+  return '<form id="f-perfil" class="stack" novalidate data-mode="setup">'+
+    '<h2>¿A quién cuidas?</h2>'+
+    '<div><label for="nombre">Nombre del adulto mayor</label><input id="nombre" type="text" value="'+esc(n)+'" placeholder="Ej. Noris M." autocomplete="off" maxlength="60"><p class="muted small" style="margin-top:6px">Usa solo el nombre o las iniciales.</p></div>'+
+    '<div><label for="barrio">Barrio donde vive</label><select id="barrio"><option value="">Elige el barrio…</option>'+Object.keys(BARRIOS).map(function(k){return '<option'+(k===b?' selected':'')+'>'+k+'</option>';}).join('')+'</select>'+
+      '<button class="linkbtn" type="button" data-act="geo" style="color:var(--brand-line)">Usar mi ubicación</button><p class="muted small">Solo guardamos el barrio, nunca tu posición exacta. Con él mostramos a los acompañantes verificados más cercanos.</p></div>'+
+    '<p class="err" id="e-perfil" role="alert"></p>'+
+    '<div class="row"><button class="btn" type="submit">Guardar</button>'+(perfilListo()?'<button class="btn ghost" type="button" data-act="perfil-cancel">Cancelar</button>':'')+'</div>'+
+  '</form>';
+}
+function guardarPerfil(btn){
+  var n=($('#nombre').value||'').trim(),b=$('#barrio').value,err=$('#e-perfil');
+  if(!n){err.textContent='Escribe el nombre del adulto mayor.';return;}
+  if(!BARRIOS[b]){err.textContent='Elige el barrio donde vive.';return;}
+  err.textContent='';
+  run(btn,function(){return state.db.doc('perfil/'+hid()).set({nombre:n.slice(0,60),barrio:b});},'Guardado.').then(function(){ui.editPerfil=false;ui.barrioSel='';update();});
+}
+function usarUbicacion(btn){
+  if(!navigator.geolocation){toast('Tu navegador no permite usar la ubicación. Elige el barrio en la lista.','bad');return;}
+  btn.disabled=true;
+  navigator.geolocation.getCurrentPosition(function(p){
+    var best=null,bd=1e9,pt=[p.coords.latitude,p.coords.longitude];
+    Object.keys(BARRIOS).forEach(function(k){var d=haversine(pt,BARRIOS[k]);if(d<bd){bd=d;best=k;}});
+    btn.disabled=false;
+    if(best&&bd<25){ui.barrioSel=best;var s=$('#barrio');if(s)s.value=best;toast('Barrio más cercano: '+best+'. Puedes cambiarlo.');}
+    else toast('Parece que estás fuera de Cali. Elige el barrio en la lista.','bad');
+  },function(){btn.disabled=false;toast('No pudimos usar tu ubicación. Elige el barrio en la lista.','bad');},{timeout:8000,maximumAge:600000});
+}
+
+/* ===== Tarjetas de visita ===== */
+function quien(v){
+  var a=acompDe(v.acompId),nombre=(a&&a.nombre)||v.acompanante||'Sin asignar';
+  var extra='';
+  if(a){
+    var d=distancia(a.barrio,barrioAdulto());
+    extra='<span class="ver">'+ico('shield')+'Verificado</span>'+(d!=null?' · <span class="muted small">'+kmTxt(d)+'</span>':'');
+  }
+  return '<div class="vwho">'+avatar(nombre)+'<div><b>'+esc(nombre)+'</b><span class="small">'+(extra||'<span class="muted">Acompañante</span>')+'</span></div></div>';
+}
+function visitCard(v,mode){
+  var cls=v.estado||'agendada',t=tipoDe(v.tipo),d=new Date(v.fecha+'T12:00:00');
+  var chip;
+  if(cls==='agendada'||cls==='en_curso'){var f=faltan(v);chip='<span class="chipst '+f.c+'">'+f.t+'</span>';}
+  else chip='<span class="chipst '+cls+'">'+(cls==='completada'?'Completada':'Cancelada')+'</span>';
+  if(v.demo)chip+='<span class="chipst demo">Ejemplo</span>';
+  var nuevo=ui.nuevaId===v.id&&v.creada&&Date.now()-new Date(v.creada).getTime()<15000;
+  var h='<article class="visit'+(nuevo?' nuevo':'')+(cls==='cancelada'?' cancelada':'')+'" data-vid="'+esc(v.id)+'">'+
+    '<div class="vdate"><span>'+esc(d.toLocaleDateString('es-CO',{weekday:'short'}).replace('.',''))+'</span><b>'+d.getDate()+'</b><span>'+esc(d.toLocaleDateString('es-CO',{month:'short'}).replace('.',''))+'</span></div>'+
+    '<div class="vbody"><div class="vtop"><b class="vhora">'+esc(rangoTxt(v))+'</b><span class="row" style="gap:6px">'+chip+'</span></div>'+
+    '<p><b>'+esc(t.nombre)+'</b> · '+esc(v.horas)+(Number(v.horas)===1?' hora':' horas')+'</p>';
+  if(mode==='acomp'){
+    var ad=v.adulto||'';
+    h+='<div class="vwho">'+avatar(ad||'?')+'<div><b>'+esc(ad?'Cuidando a '+ad:'Adulto mayor')+'</b><span class="small muted">'+esc(v.barrio||barrioAdulto()||'')+'</span></div></div>';
+    h+='<p class="small"><b style="color:var(--ok)">Ganas '+money(ganancia(v))+'</b> <span class="muted">de '+money(v.precio)+'</span></p>';
+  } else {
+    h+=quien(v)+'<p class="small muted">'+money(v.precio)+'</p>';
+  }
+  if(v.pedido)h+='<p class="small"><b>Pedido:</b> '+esc(v.pedido)+'</p>';
+  if(v.llegada)h+='<p class="small muted">Llegó a las '+fmtTime(v.llegada)+(v.salida?' · terminó a las '+fmtTime(v.salida):'')+'</p>';
+  if(v.nota)h+='<p class="small">“'+esc(v.nota)+'”</p>';
+  var act='';
+  if(mode==='familiar'&&cls==='agendada'){
+    act=ui.cancelId===v.id
+      ?'<div class="confirm"><b>¿Cancelar esta visita?</b><div class="grid2"><button class="btn danger sm" type="button" data-act="cancelar-si" data-id="'+esc(v.id)+'">Sí, cancelar</button><button class="btn ghost sm" type="button" data-act="cancelar-no">No</button></div></div>'
+      :'<div class="row"><button class="btn ghost sm" type="button" data-act="cancelar" data-id="'+esc(v.id)+'">Cancelar visita</button></div>';
+  }
+  if(mode==='acomp'){
+    var ruta=BARRIOS[v.barrio||barrioAdulto()];
+    if(activa(v)&&ruta)act+='<a class="linkbtn" style="color:var(--brand-line)" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&destination='+ruta[0]+','+ruta[1]+'">Cómo llegar (zona aproximada)</a>';
+    if(cls==='agendada')act+='<button class="btn block" data-act="llegue" data-id="'+esc(v.id)+'" type="button">Llegué</button>';
+    if(cls==='en_curso')act+='<div><label for="nota-'+esc(v.id)+'">Nota de la visita (opcional)</label><textarea id="nota-'+esc(v.id)+'" data-draft="'+esc(v.id)+'" placeholder="¿Cómo estuvo? ¿Algo que la familia deba saber?">'+esc(drafts[v.id]||'')+'</textarea></div><button class="btn block" data-act="termine" data-id="'+esc(v.id)+'" type="button">Terminé la visita</button>';
+  }
+  return h+act+'</div></article>';
+}
+function listaPorDia(vs,mode){
+  var out='',last='';
+  vs.forEach(function(v){
+    if(v.fecha!==last){last=v.fecha;var e=etiquetaDia(v.fecha);out+='<h3 class="dayh">'+esc(e)+(e==='Hoy'||e==='Mañana'?'<small>'+esc(fechaLarga(v.fecha))+'</small>':'')+'</h3>';}
+    out+=visitCard(v,mode);
+  });
+  return out;
+}
+function loading(){return '<div class="empty">'+(state.conn==='offline'?'No se pudieron cargar los datos. Revisa tu conexión y recarga la página.':'Cargando…')+'</div>';}
+
+/* ===== Asistente para agendar ===== */
+function wzDefaults(){
+  var d=new Date(Date.now()+3600000),f=localDate(),h=d.getHours()+1;
+  if(d.getDate()!==new Date().getDate()||h>20){f=localDate(new Date(Date.now()+86400000));h=8;}
+  wz.fecha=f;wz.hora=pad(Math.min(h,20))+':00';wz.horas=2;wz.tipo='compania';wz.acomp=null;wz.step=1;wz.detalle='';wz.pedido='';
+}
+function ocupada(acompId,fecha,hora,horas){
+  var s=new Date(fecha+'T'+hora+':00').getTime(),e=s+horas*3600000;
+  return state.visitas.some(function(v){return v.acompId===acompId&&activa(v)&&startMs(v)<e&&endMs(v)>s;});
+}
+function acompsOrdenados(){
+  var b=barrioAdulto();
+  return state.acomps.map(function(a){return {a:a,d:distancia(a.barrio,b),busy:ocupada(a.id,wz.fecha,wz.hora,wz.horas)};})
+    .sort(function(x,y){return (x.d==null?99:x.d)-(y.d==null?99:y.d);});
+}
+function wzValida2(){
+  if(!wz.fecha)return 'Elige la fecha de la visita.';
+  if(wz.fecha<localDate())return 'Esa fecha ya pasó. Elige hoy o un día futuro.';
+  if(!wz.hora)return 'Elige la hora de inicio.';
+  if(wz.fecha===localDate()&&new Date(wz.fecha+'T'+wz.hora+':00').getTime()<Date.now())return 'Esa hora ya pasó. Elige una hora más tarde.';
+  if(parseInt(wz.hora.split(':')[0],10)+wz.horas>24)return 'La visita debe terminar antes de la medianoche.';
+  return '';
+}
+function wizHTML(){
+  var steps='<div class="steps" aria-hidden="true"><span class="on"></span><span'+(wz.step>=2?' class="on"':'')+'></span><span'+(wz.step>=3?' class="on"':'')+'></span></div>';
+  var h='<section class="card">'+steps;
+  var err=ui.wizErr?'<p class="err" role="alert">'+esc(ui.wizErr)+'</p>':'';
+  if(wz.step===1){
+    h+='<div class="stephead"><h2>¿Qué necesita?</h2><span class="muted small">Paso 1 de 3</span></div><div class="stack" role="radiogroup" aria-label="Tipo de servicio">'+
+      Object.keys(TIPOS).map(function(k){var t=TIPOS[k];return '<button type="button" role="radio" class="svc" aria-checked="'+(wz.tipo===k)+'" data-act="wz-tipo" data-v="'+k+'">'+ico(t.ico)+'<span><b>'+t.nombre+'</b><span class="muted small">'+t.desc+' · '+money(t.porHora).replace(' COP','')+'/hora</span></span></button>';}).join('')+
+    '</div>'+(wz.tipo==='otra'?'<div><label for="wz-detalle">¿Qué necesitas?</label><input id="wz-detalle" type="text" maxlength="120" value="'+esc(wz.detalle)+'" placeholder="Ej. Acompañarla a misa y a tomar un café"></div>':'')+'<div><label for="wz-pedido">Algo más que el acompañante deba saber (opcional)</label><textarea id="wz-pedido" maxlength="200" placeholder="Ej. Le gusta caminar despacio; toma sus pastillas a las 2 p. m.">'+esc(wz.pedido)+'</textarea></div>'+err+'<button class="btn block" type="button" data-act="wz-next">Continuar</button>';
+  } else if(wz.step===2){
+    var dias=[0,1,2].map(function(n){var f=localDate(new Date(Date.now()+n*86400000));return [f,n===0?'Hoy':n===1?'Mañana':cap(new Date(f+'T12:00:00').toLocaleDateString('es-CO',{weekday:'long'}))];});
+    var horas=['08:00','10:00','14:00','16:00'];
+    var enLista=dias.some(function(d){return d[0]===wz.fecha;});
+    var horaLista=horas.indexOf(wz.hora)>=0;
+    h+='<div class="stephead"><h2>¿Cuándo?</h2><span class="muted small">Paso 2 de 3</span></div>'+
+      '<div><span class="lbl">Día</span><div class="chips">'+dias.map(function(d){return '<button type="button" class="pickchip" aria-pressed="'+(wz.fecha===d[0])+'" data-act="wz-fecha" data-v="'+d[0]+'">'+d[1]+'</button>';}).join('')+'</div></div>'+
+      '<div><label for="wz-fecha-in">Otra fecha</label><input id="wz-fecha-in" type="date" min="'+localDate()+'" value="'+(enLista?'':esc(wz.fecha))+'"></div>'+
+      '<div><span class="lbl">Hora de inicio</span><div class="chips">'+horas.map(function(x){return '<button type="button" class="pickchip" aria-pressed="'+(wz.hora===x)+'" data-act="wz-hora" data-v="'+x+'">'+horaTxt(x)+'</button>';}).join('')+'</div></div>'+
+      '<div><label for="wz-hora-in">Otra hora</label><input id="wz-hora-in" type="time" value="'+(horaLista?'':esc(wz.hora))+'"></div>'+
+      '<div><span class="lbl" id="l-dur">Duración</span><div class="stepper" role="group" aria-labelledby="l-dur"><button type="button" data-act="wz-menos" aria-label="Una hora menos"'+(wz.horas<=1?' disabled':'')+'>−</button><output aria-live="polite">'+wz.horas+(wz.horas===1?' hora':' horas')+'</output><button type="button" data-act="wz-mas" aria-label="Una hora más"'+(wz.horas>=12?' disabled':'')+'>+</button></div></div>'+
+      '<div class="summary"><b>'+esc(wz.hora?rangoTxt({hora:wz.hora,horas:wz.horas}):'')+'</b><span class="small">'+esc(wz.fecha?etiquetaDia(wz.fecha)+(diasHasta(wz.fecha)<2&&diasHasta(wz.fecha)>=0?' · '+fechaLarga(wz.fecha):''):'')+'</span></div>'+err+
+      '<div class="grid2"><button class="btn ghost" type="button" data-act="wz-back">Atrás</button><button class="btn" type="button" data-act="wz-next">Continuar</button></div>';
+  } else {
+    var lista=acompsOrdenados(),libres=lista.filter(function(x){return !x.busy;});
+    if(!wz.acomp||lista.every(function(x){return x.a.id!==wz.acomp||x.busy;}))wz.acomp=libres.length?libres[0].a.id:null;
+    var vis=ui.masAcomps?lista:lista.slice(0,4);
+    h+='<div class="stephead"><h2>Elige acompañante</h2><span class="muted small">Paso 3 de 3</span></div>'+
+      '<p class="muted small">Verificados y ordenados por cercanía a <b>'+esc(barrioAdulto())+'</b>. Pasan revisión de identidad, antecedentes y referencias.</p>'+
+      (!state.loaded.acomp?loading():!lista.length?'<div class="empty">Aún no hay acompañantes disponibles.</div>':'<div class="stack" role="radiogroup" aria-label="Acompañantes cercanos">'+vis.map(function(x,i){
+        var a=x.a;
+        return '<button type="button" role="radio" class="comp" aria-checked="'+(wz.acomp===a.id)+'" data-act="wz-acomp" data-v="'+esc(a.id)+'"'+(x.busy?' disabled':'')+'>'+avatar(a.nombre,'lg')+
+          '<span class="info"><b>'+esc(a.nombre)+'</b>'+
+          '<span><span class="ver">'+ico('shield')+'Verificado</span>'+(i===0&&!x.busy?'<span class="tag">Más cercano</span>':'')+'</span>'+
+          '<span class="small muted">★ '+Number(a.rating).toFixed(1).replace('.',',')+' · '+esc(a.visitas)+' visitas · '+esc(a.barrio)+'</span>'+(x.busy?'<span class="small err">Ocupado a esa hora</span>':'')+'</span>'+
+          '<span class="km">'+(x.d!=null?kmTxt(x.d):'')+'</span></button>';
+      }).join('')+(!ui.masAcomps&&lista.length>4?'<button class="linkbtn" type="button" data-act="wz-mas-acomps" style="color:var(--brand-line)">Ver '+(lista.length-4)+' más</button>':'')+'</div>')+
+      '<div class="total"><span>Total a pagar</span><b>'+money(precio(wz.tipo,wz.horas))+'</b></div>'+err+
+      '<div class="grid2"><button class="btn ghost" type="button" data-act="wz-back">Atrás</button><button class="btn" type="button" data-act="wz-confirmar"'+(wz.acomp?'':' disabled')+'>Confirmar visita</button></div>';
+  }
+  return h+'</section>';
+}
+function renderWiz(){
+  var box=$('#wiz');if(!box)return;
+  var ae=document.activeElement,fid=ae&&ae.id&&box.contains(ae)?ae.id:null;
+  box.innerHTML=wizHTML();
+  if(fid){var n=document.getElementById(fid);if(n)n.focus();}
+}
+function wzNext(){
+  if(wz.step===1&&wz.tipo==='otra'&&(wz.detalle||'').trim().length<3){ui.wizErr='Cuéntanos qué necesitas (unas pocas palabras bastan).';renderWiz();return;}
+  ui.wizErr='';
+  if(wz.step===2){var e=wzValida2();if(e){ui.wizErr=e;renderWiz();return;}}
+  wz.step=Math.min(3,wz.step+1);renderWiz();
+  var b=$('#wiz');if(b)b.scrollIntoView({block:'start',behavior:'smooth'});
+}
+function confirmarVisita(btn){
+  var e=wzValida2();if(e){ui.wizErr=e;wz.step=2;renderWiz();return;}
+  var a=acompDe(wz.acomp);
+  if(!a){ui.wizErr='Elige un acompañante.';renderWiz();return;}
+  if(ocupada(a.id,wz.fecha,wz.hora,wz.horas)){ui.wizErr='Ese acompañante acaba de ocuparse. Elige otro.';renderWiz();return;}
+  var ped=[wz.tipo==='otra'?(wz.detalle||'').trim():'',(wz.pedido||'').trim()].filter(Boolean).join(' — ').slice(0,300),p=precio(wz.tipo,wz.horas),visita={hid:hid(),adulto:nombreAdulto(),pedido:ped,fecha:wz.fecha,hora:wz.hora,horas:wz.horas,tipo:wz.tipo,acompId:a.id,acompanante:a.nombre,barrio:barrioAdulto(),
+    precio:p,pagoAcomp:Math.round(p*(1-COMISION)),estado:'agendada',llegada:null,salida:null,nota:'',creada:nowISO()};
+  run(btn,function(){return state.db.collection('visitas').add(visita);},null).then(function(ref){
+    if(!ref)return;
+    audit('visita_creada',a.nombre);
+    ui.nuevaId=ref.id;ui.scrollTo=ref.id;ui.wizErr='';
+    toast('Agendada: '+etiquetaDia(visita.fecha).toLowerCase()+' a las '+horaTxt(visita.hora)+' con '+a.nombre.split(' ')[0]+'.');
+    setTimeout(function(){ui.scrollTo=null;},4000);
+    wzDefaults();go('familiar/visitas');
+  });
+}
+
+/* ===== Vistas por rol y pestaña ===== */
+var views={};
+
+views['familiar/inicio']={
+  mount:function(){$('#view').innerHTML='<section class="card" id="estado"></section><section id="alertas" class="stack"></section><section id="siguiente"></section><section class="stack" id="avisos"></section><section class="stack" id="seg"></section>';},
+  update:function(){
+    var est=$('#estado');if(!est)return;
+    var n=nombreAdulto(),mode=!state.loaded.adulto?'load':(!perfilListo()||ui.editPerfil)?'setup':'view';
+    if(!(mode==='setup'&&est.getAttribute('data-mode')==='setup')){
+      var html='';
+      if(mode==='load')html=loading();
+      else if(mode==='setup')html=perfilForm();
+      else{
+        var last=state.checkins[0],sh;
+        if(last&&localDate(new Date(last.creada))===localDate())sh='<div class="state ok"><b>Hoy avisó que está bien</b><span>'+hace(last.creada)+' · '+fmtTime(last.creada)+'</span></div>';
+        else if(last)sh='<div class="state warn"><b>Hoy aún no ha avisado</b><span>Último aviso '+hace(last.creada)+'</span></div>';
+        else sh='<div class="state warn"><b>Aún no ha enviado avisos</b><span>Cuando toque “Estoy bien” lo verás aquí al instante.</span></div>';
+        html='<div class="row between"><div><p class="muted">Cuidando a</p><p class="big">'+esc(n)+'</p><p class="muted small">'+ico('pin').replace('<svg','<svg width="16" height="16" style="vertical-align:-2px"')+' '+esc(barrioAdulto())+', Cali</p></div><button class="btn ghost sm" type="button" data-act="perfil-edit">Cambiar</button></div>'+sh;
+      }
+      est.innerHTML=html;est.setAttribute('data-mode',mode);
+    }
+    $('#alertas').innerHTML=state.ayudas.filter(function(a){return a.estado==='abierta';}).map(function(a){
+      return '<div class="alert" role="alert"><b>'+esc(n||'Tu familiar')+' pidió ayuda</b><span>'+hace(a.creada)+' · '+fmtTime(a.creada)+'</span><button class="btn block" type="button" data-act="atender" data-id="'+esc(a.id)+'">Ya la atendí</button></div>';
+    }).join('');
+    var sg=$('#siguiente');
+    if(!state.loaded.visitas){sg.innerHTML=loading();}
+    else{
+      var prox=state.visitas.filter(activa).sort(byStart)[0];
+      if(prox){
+        var f=faltan(prox),a=acompDe(prox.acompId),nom=(a&&a.nombre)||prox.acompanante||'';
+        sg.innerHTML='<div class="hero"><span class="k">Siguiente visita</span><span class="t">'+esc(f.t)+'</span><span>'+esc(etiquetaDia(prox.fecha))+' · '+esc(rangoTxt(prox))+'</span>'+
+          '<div class="w">'+avatar(nom)+'<div><b>'+esc(nom)+'</b><br><span class="small">'+esc(tipoDe(prox.tipo).nombre)+' · '+esc(prox.horas)+(Number(prox.horas)===1?' hora':' horas')+'</span></div></div>'+
+          '<a href="#familiar/visitas">Ver todas las visitas →</a></div>';
+      } else {
+        sg.innerHTML='<div class="card"><h2>Siguiente visita</h2><p class="muted">No hay visitas agendadas todavía.</p><a class="btn block" href="#familiar/agendar">Agendar una visita</a></div>';
+      }
+    }
+    var av=$('#avisos');
+    var u=state.checkins.slice(0,3);
+    av.innerHTML=u.length?'<h3>Últimos avisos de '+esc(n||'tu familiar')+'</h3><div class="card" style="gap:8px">'+u.map(function(c){return '<div class="row between"><span>Avisó que estaba bien</span><span class="muted small">'+esc(hace(c.creada))+'</span></div>';}).join('')+'</div>':'';
+
+    var sg2=$('#seg');
+    var seg='<h3>Seguridad y acceso</h3><div class="card" style="gap:12px">';
+    if(ui.codigoHogar){
+      seg+='<b>Código para vincular el celular del adulto mayor</b><p class="big" style="letter-spacing:.25em;font-size:34px">'+esc(ui.codigoHogar)+'</p><p class="muted small">En su celular entra a “Soy el adulto mayor” y escribe este código una sola vez. Anótalo ahora: por seguridad no se vuelve a mostrar.</p><button class="btn sm" type="button" data-act="codigo-ok">Listo, ya lo anoté</button>';
+    } else {
+      seg+='<b>Celular del adulto mayor</b><p class="muted small">Solo los celulares vinculados con un código pueden enviar avisos. Si generas un código nuevo, los celulares anteriores dejan de funcionar.</p><button class="btn ghost sm" type="button" data-act="gen-codigo">Generar código de vinculación</button>';
+    }
+    var au=state.audit.slice(0,6);
+    seg+='<hr style="border:0;border-top:1px solid var(--line);width:100%"><b>Actividad reciente</b>'+(au.length?au.map(function(x){return '<div class="row between" style="gap:8px"><span class="small">'+esc(AUD[x.tipo]||x.tipo)+(x.detalle?' · '+esc(x.detalle):'')+'</span><span class="muted small" style="white-space:nowrap">'+esc(hace(x.creada))+'</span></div>';}).join(''):'<p class="muted small">Sin actividad registrada.</p>');
+    seg+='<hr style="border:0;border-top:1px solid var(--line);width:100%">';
+    seg+=ui.resetAsk
+      ?'<div class="confirm"><span>Se borrarán el perfil, las visitas, los avisos y el PIN de esta familia, y la app quedará en blanco. ¿Continuar?</span><div class="grid2"><button class="btn sm danger" type="button" data-act="reset-si">Sí, reiniciar</button><button class="btn sm ghost" type="button" data-act="reset-no">Cancelar</button></div></div>'
+      :'<button class="linkbtn" type="button" data-act="reset-ask" style="color:var(--brand-line)">Borrar los datos de esta familia y empezar de cero</button>';
+    sg2.innerHTML=seg+'</div>';
+  }
+};
+
+views['familiar/agendar']={
+  mount:function(){
+    $('#view').innerHTML='<h1 class="page">Agendar una visita</h1><div id="gate"></div><div id="wiz"></div>';
+    if(!wz.fecha)wzDefaults();
+  },
+  update:function(){
+    var g=$('#gate'),w=$('#wiz');if(!g)return;
+    if(!state.loaded.adulto){g.innerHTML=loading();w.innerHTML='';return;}
+    if(!perfilListo()){
+      w.innerHTML='';
+      if(g.getAttribute('data-mode')!=='setup'){g.innerHTML='<section class="card"><p class="muted">Primero cuéntanos a quién cuidas y en qué barrio vive, para mostrarte a los acompañantes verificados más cercanos.</p>'+perfilForm()+'</section>';g.setAttribute('data-mode','setup');}
+      return;
+    }
+    if(g.innerHTML){g.innerHTML='';g.removeAttribute('data-mode');}
+    renderWiz();
+  }
+};
+
+views['familiar/visitas']={
+  mount:function(){$('#view').innerHTML='<section class="stack"><div class="row between"><h1 class="page">Próximas visitas</h1><a class="btn sm" href="#familiar/agendar">+ Agendar</a></div><div id="proximas" class="stack"></div></section><section class="stack"><h2>Historial</h2><div id="historial" class="stack"></div></section>';},
+  update:function(){
+    if(!$('#proximas'))return;
+    if(!state.loaded.visitas){$('#proximas').innerHTML=loading();$('#historial').innerHTML='';return;}
+    var vs=state.visitas.slice().sort(byStart);
+    var prox=vs.filter(activa),hist=vs.filter(function(v){return !activa(v);}).reverse().slice(0,10);
+    $('#proximas').innerHTML=prox.length?listaPorDia(prox,'familiar'):'<div class="empty">Aún no hay visitas agendadas. Toca “+ Agendar” y aparecerán aquí al instante.</div>';
+    $('#historial').innerHTML=hist.length?hist.map(function(v){return visitCard(v,'familiar');}).join(''):'<div class="empty">Cuando se complete una visita, quedará registrada aquí.</div>';
+    if(ui.scrollTo){var el=document.querySelector('[data-vid="'+ui.scrollTo.replace(/"/g,'')+'"]');if(el){el.scrollIntoView({block:'center'});ui.scrollTo=null;}}
+  }
+};
+
+views['adulto/']={
+  mount:function(){
+    $('#view').innerHTML=
+      '<section class="stack"><h1 class="page" id="saludo">Hola</h1><p class="muted" id="proxima"></p></section>'+
+      '<button class="btn accent huge block" data-act="bien" type="button">'+ICON.ok+'<span>Estoy bien</span></button>'+
+      '<button class="btn danger huge block" data-act="ayuda-pedir" type="button">'+ICON.help+'<span>Necesito ayuda</span></button>'+
+      '<div id="confirm-ayuda"></div>'+
+      '<p id="msg-adulto" class="state ok" role="status" aria-live="polite" hidden></p>'+
+      '<p class="muted" id="ultimo-aviso"></p><button class="linkbtn" type="button" data-act="desvincular" style="color:var(--brand-line)">Desvincular este celular</button>';
+  },
+  update:function(){
+    var n=nombreAdulto();
+    $('#saludo').textContent=n?('Hola, '+n):'Hola';
+    var prox=state.visitas.filter(activa).sort(byStart)[0];
+    $('#proxima').textContent=!state.loaded.visitas?'':prox?('Próxima visita: '+etiquetaDia(prox.fecha).toLowerCase()+' a las '+horaTxt(prox.hora)+(prox.acompanante?' con '+prox.acompanante:'')+' · '+faltan(prox).t.toLowerCase()):'No tienes visitas agendadas por ahora.';
+    $('#confirm-ayuda').innerHTML=ui.confirmAyuda?'<div class="confirm" role="alertdialog" aria-label="Confirmar pedido de ayuda"><p class="big">¿Avisar a tu familia que necesitas ayuda?</p><div class="grid2"><button class="btn danger" type="button" data-act="ayuda-si">Sí, avisar</button><button class="btn ghost" type="button" data-act="ayuda-no">No</button></div></div>':'';
+    var m=$('#msg-adulto');m.hidden=!ui.msgAdulto;m.textContent=ui.msgAdulto||'';
+    var last=state.checkins[0];
+    $('#ultimo-aviso').textContent=last?('Tu último aviso fue '+hace(last.creada)+'.'):'';
+  }
+};
+
+function miPerfil(){return authed('acompanante')?acompDe(session.id):null;}
+function acompHeader(a){
+  return '<div class="row" style="gap:10px">'+avatar(a.nombre)+'<div><b>Hola, '+esc(a.nombre.split(' ')[0])+'</b><br><span class="muted small">'+esc(a.barrio)+' · <span class="ver" style="display:inline-flex">'+ico('shield')+'Verificado</span></span></div></div>';
+}
+
+views['acompanante/agenda']={
+  mount:function(){$('#view').innerHTML='<div id="yo"></div>';},
+  update:function(){
+    var box=$('#yo');if(!box)return;
+    var a=miPerfil();
+    if(!a){box.innerHTML=loading();box.setAttribute('data-mode','load');return;}
+    if(box.getAttribute('data-mode')!=='agenda'){
+      box.innerHTML='<div class="stack" style="gap:18px"><div id="yo-head"></div><h1 class="page">Tu agenda</h1><p class="muted" id="yo-sub">Marca cuando llegues y cuando termines cada visita.</p><div id="agenda" class="stack"></div></div>';
+      box.setAttribute('data-mode','agenda');
+    }
+    $('#yo-head').innerHTML=acompHeader(a);
+    var ag=$('#agenda');
+    if(!state.loaded.visitas){ag.innerHTML=loading();return;}
+    var vs=state.visitas.filter(function(v){return v.acompId===a.id&&activa(v);}).sort(byStart);
+    var hoy=vs.filter(function(v){return v.fecha===localDate();});
+    $('#yo-sub').textContent=vs.length?('Tienes '+vs.length+(vs.length===1?' visita pendiente':' visitas pendientes')+(hoy.length?' · '+hoy.length+' hoy':'')+'. Marca cuando llegues y cuando termines.'):'Marca cuando llegues y cuando termines cada visita.';
+    var ae=document.activeElement,fid=null,ss=0,se=0;
+    if(ae&&ae.getAttribute&&ae.getAttribute('data-draft')&&ag.contains(ae)){fid=ae.id;ss=ae.selectionStart;se=ae.selectionEnd;}
+    ag.innerHTML=vs.length?listaPorDia(vs,'acomp'):'<div class="empty">No tienes visitas pendientes. Cuando una familia te agende, aparecerá aquí sola.</div>';
+    if(fid){var ne=document.getElementById(fid);if(ne){ne.focus();try{ne.setSelectionRange(ss,se);}catch(e){}}}
+  }
+};
+
+function viernesDe(f){var d=new Date(f+'T12:00:00'),add=(5-d.getDay()+7)%7||7;d.setDate(d.getDate()+add);return localDate(d);}
+views['acompanante/pagos']={
+  mount:function(){$('#view').innerHTML='<div id="pg" class="stack" style="gap:18px"></div>';},
+  update:function(){
+    var box=$('#pg');if(!box)return;
+    var a=miPerfil();
+    if(!a){box.innerHTML=loading();return;}
+    if(!state.loaded.visitas){box.innerHTML=loading();return;}
+    var hoy=localDate(),mes=hoy.slice(0,7);
+    var hechas=state.visitas.filter(function(v){return v.acompId===a.id&&v.estado==='completada';}).sort(function(x,y){return byStart(y,x);});
+    var ganado=hechas.filter(function(v){return v.fecha.slice(0,7)===mes;}).reduce(function(s,v){return s+ganancia(v);},0);
+    var pend=hechas.filter(function(v){return viernesDe(v.fecha)>=hoy;});
+    var pendTot=pend.reduce(function(s,v){return s+ganancia(v);},0);
+    var html='<div class="stack" style="gap:18px">'+acompHeader(a)+'<h1 class="page">Mis pagos</h1></div>'+
+      '<div class="earn"><span class="k">Ganado este mes</span><span class="n">'+money(ganado)+'</span><span class="s">Recibes el '+pctAcomp()+'% de cada visita · Pago cada viernes a tu Nequi</span></div>';
+    if(pend.length){
+      var vie=pend.map(function(v){return viernesDe(v.fecha);}).sort()[0];
+      html+='<div class="nextpay"><span><b>Próximo pago</b><br><span class="muted small">'+esc(fechaPago(vie))+'</span></span><b style="color:var(--ok);font-size:20px">'+money(pendTot)+'</b></div>';
+    }
+    if(!hechas.length){html+='<div class="empty">Aún no tienes pagos. Cuando termines una visita, la verás aquí.</div>';}
+    else{
+      var meses={},orden=[];
+      hechas.forEach(function(v){var k=v.fecha.slice(0,7);if(!meses[k]){meses[k]=[];orden.push(k);}meses[k].push(v);});
+      html+='<div class="paylist">'+orden.map(function(k){
+        var tot=meses[k].reduce(function(s,v){return s+ganancia(v);},0);
+        var nm=cap(new Date(k+'-15T12:00:00').toLocaleDateString('es-CO',{month:'long',year:'numeric'}));
+        return (orden.length>1?'<div class="monthh"><span>'+esc(nm)+'</span><span>'+money(tot)+'</span></div>':'')+meses[k].map(function(v){
+          return '<div class="pay"><div><b class="d">'+esc(fechaLarga(v.fecha))+'</b><span class="muted">'+esc(tipoDe(v.tipo).nombre)+' · '+esc(v.horas)+' h</span></div><div class="amt"><b>+'+money(ganancia(v))+'</b><small>de '+money(v.precio)+'</small></div></div>';
+        }).join('');
+      }).join('')+'</div>';
+    }
+    box.innerHTML=html;
+  }
+};
+
+/* ===== Render ===== */
+
+function gateName(){
+  if(route.role==='familiar'&&!authed('familiar'))return 'gate/familiar';
+  if(route.role==='acompanante'&&!authed('acompanante'))return 'gate/acompanante';
+  if(route.role==='adulto'&&state.pair!=='ok')return 'gate/adulto';
+  return null;
+}
+function gateBox(){return $('#gt');}
+function setGate(mode,html){var b=gateBox();if(b&&b.getAttribute('data-mode')!==mode){b.innerHTML=html;b.setAttribute('data-mode',mode);}}
+function notaSeg(t){return '<p class="muted small">'+t+'</p>';}
+
+views['gate/acompanante']={
+  mount:function(){$('#view').innerHTML='<section class="card" id="gt"></section>';},
+  update:function(){
+    setGate('login','<form id="f-login-ac" class="stack" novalidate><h1 class="page">Ingreso de acompañantes</h1><p class="muted">Usa tu código personal y tu PIN de 6 dígitos.</p>'+
+      '<div><label for="lg-code">Código de acompañante</label><input id="lg-code" type="text" autocomplete="off" autocapitalize="characters" placeholder="ACM-0000" maxlength="12"></div>'+
+      pinField('lg-pin','PIN')+'<p class="err" id="e-login" role="alert"></p><button class="btn block" type="submit">Entrar</button>'+
+      notaSeg('Tras 5 intentos fallidos el acceso se bloquea 5 minutos. La sesión se cierra sola después de 5 minutos sin usar la app.')+'</form>');
+  }
+};
+views['gate/familiar']={
+  mount:function(){
+    $('#view').innerHTML='<section class="card" id="gt"></section>';
+    state.famCred=undefined;
+    if(state.db){var h0=famHid();if(!h0){state.famCred='no';}else state.db.doc('credenciales/f_'+h0).get().then(function(sn){if(!sn.exists)ls('cuidalink_fam',null);state.famCred=sn.exists?'si':'no';update();}).catch(function(){state.famCred='err';update();});}
+  },
+  update:function(){
+    if(!state.db){setGate('load','<p class="muted">Conectando…</p>');return;}
+    if(state.famCred===undefined){setGate('load','<p class="muted">Verificando…</p>');return;}
+    if(state.famCred==='err'){setGate('err','<p class="err">No se pudo verificar el acceso. Recarga la página.</p>');return;}
+    if(state.famCred==='no'){
+      setGate('setup','<form id="f-setup-fam" class="stack" novalidate><h1 class="page">Crea el PIN de tu familia</h1><p class="muted">Protege la información de tu ser querido. Lo necesitarás cada vez que entres como familiar.</p>'+
+        pinField('sf-1','PIN de 6 dígitos','Evita fechas o secuencias como 123456.')+pinField('sf-2','Repite el PIN')+'<p class="err" id="e-login" role="alert"></p><button class="btn block" type="submit">Crear PIN y entrar</button></form>');
+      return;
+    }
+    setGate('login','<form id="f-login-fam" class="stack" novalidate><h1 class="page">Ingreso de familia</h1><p class="muted">Escribe el PIN de tu familia.</p>'+pinField('lg-pin','PIN')+
+      '<p class="err" id="e-login" role="alert"></p><button class="btn block" type="submit">Entrar</button>'+notaSeg('Tras 5 intentos fallidos el acceso se bloquea 5 minutos. La sesión se cierra sola después de 10 minutos sin usar la app.')+'</form>');
+  }
+};
+views['gate/adulto']={
+  mount:function(){$('#view').innerHTML='<section class="card" id="gt"></section>';},
+  update:function(){
+    if(!state.db){setGate('load','<p class="muted">Conectando…</p>');return;}
+    if(state.pair===undefined||state.pair==='checking'){setGate('load','<p class="muted">Verificando…</p>');return;}
+    setGate('pair','<form id="f-pair" class="stack" novalidate><h1 class="page">Vincular este celular</h1><p class="muted">Pídele a tu familiar el código de 6 números que aparece en su celular, en Inicio. Solo se escribe una vez.</p>'+
+      pinField('pr-code','Código de vinculación')+'<p class="err" id="e-login" role="alert"></p><button class="btn block" type="submit">Vincular</button></form>');
+  }
+};
+function checkPair(){
+  if(!state.db||state.pair==='checking')return;
+  var c=null;try{c=JSON.parse(ls('cuidalink_adulto')||'null');}catch(e){}
+  if(!c||!c.code||!c.hid){state.pair='none';return;}
+  state.pair='checking';
+  state.db.doc('codigos/'+c.code).get().then(function(sn){var r={ok:sn.exists&&sn.data().hid===c.hid};
+    if(r.ok)state.pair='ok';else{state.pair='none';ls('cuidalink_adulto',null);}
+    render();
+  }).catch(function(){state.pair='none';render();});
+}
+function currentView(){
+  if(!route.role)return null;
+  var g=gateName();if(g)return views[g];
+  return views[route.role+'/'+(route.tab||'')]||null;
+}
+function updateBanner(){
+  var b=$('#banner');if(b)b.innerHTML=state.conn==='offline'?'<p class="banner" role="alert">Sin conexión con la base de datos. Puedes mirar, pero no guardar cambios.</p>':'';
+  var d=$('#pill-dot');if(d)d.className='dot '+(state.conn==='live'?'live':state.conn==='offline'?'off':'');
+  var bd=$('#badge-visitas');
+  if(bd){var n=state.visitas.filter(activa).length;bd.textContent=n;bd.hidden=!n;}
+}
+function updateLanding(){
+  var c=$('#conn');
+  if(c){
+    var txt=state.conn==='live'?'En vivo':state.conn==='offline'?'Sin conexión':'Conectando…';
+    c.innerHTML='<span class="dot '+(state.conn==='live'?'live':state.conn==='offline'?'off':'')+'"></span><span>'+txt+'</span>';
+  }
+}
+function update(){
+  if(!route.role){updateLanding();return;}
+  var v=currentView();if(v)v.update();
+  updateBanner();
+}
+function render(){
+  route=parseRoute();
+  if(session&&(!route.role||session.role!==route.role)){session=null;saveSession();ui.codigoHogar=null;ui.resetAsk=false;}
+  if(route.role==='adulto'&&state.pair!=='ok')checkPair();
+  var key=(route.role||'')+':'+(gateName()||'ok')+':'+(session&&session.id||'');
+  if(key!==subKey){subKey=key;startSubs();}
+  var app=$('#app');
+  document.body.setAttribute('data-screen',route.role||'landing');
+  if(!route.role){app.innerHTML=landing();}
+  else{
+    app.innerHTML=shell();
+    var v=currentView();if(v)v.mount();
+  }
+  if(!ui.scrollTo)window.scrollTo(0,0);
+  update();
+}
+
+/* ===== Acciones ===== */
+function needDb(){
+  if(!state.db){toast('Sin conexión con la base de datos. Intenta de nuevo en unos segundos.','bad');return false;}
+  return true;
+}
+function run(btn,fn,okMsg){
+  if(!needDb())return Promise.resolve();
+  if(btn)btn.disabled=true;
+  return Promise.resolve().then(fn).then(function(r){if(okMsg)toast(okMsg);return r;}).catch(function(e){
+    console.error(e);
+    toast(e&&e.code==='quota_exceeded'?'Se llenó el espacio de datos de demostración. Usa “Reiniciar datos”.':'No se pudo guardar. Revisa tu conexión e inténtalo de nuevo.','bad');
+  }).then(function(r){if(btn)btn.disabled=false;return r;});
+}
+function seedVisitas(){
+  return Promise.all(DEMO_VISITAS.map(function(v){
+    var o=Object.assign({},v,{barrio:'Ciudad Jardín',estado:'completada',demo:true});delete o.id;
+    return state.db.doc('visitas/'+v.id).set(o);
+  }));
+}
+
+function nuevoCodigo(){
+  var code=randPin();
+  return state.db.doc('codigos/'+code).get().then(function(sn){return sn.exists?nuevoCodigo():code;});
+}
+function pairCheck(code){
+  var lk=parseInt(ls('cuidalink_pairlock')||'0',10);
+  if(lk>Date.now())return Promise.resolve({ok:false,tipo:'bloqueado',min:Math.ceil((lk-Date.now())/60000)});
+  return state.db.doc('codigos/'+code).get().then(function(sn){
+    if(sn.exists){ls('cuidalink_pairtry','0');return {ok:true,hid:sn.data().hid};}
+    var n=parseInt(ls('cuidalink_pairtry')||'0',10)+1;
+    if(n>=MAXINT){ls('cuidalink_pairtry','0');ls('cuidalink_pairlock',String(Date.now()+BLOQUEO_MS));return {ok:false,tipo:'bloqueado',min:5};}
+    ls('cuidalink_pairtry',String(n));return {ok:false,tipo:'mal',quedan:MAXINT-n};
+  });
+}
+function generarCodigo(btn){
+  var code=randPin();
+  var nc=null;run(btn,function(){var h=famHid();return nuevoCodigo().then(function(c0){nc=c0;return state.db.collection('codigos').where('hid','==',h).get();}).then(function(s){return Promise.all(s.docs.map(function(d){return state.db.doc('codigos/'+d.id).delete();}));}).then(function(){return state.db.doc('codigos/'+nc).set({hid:h,creada:nowISO()});}).then(function(){return true;});},null).then(function(ok){if(!ok)return;var code=nc;
+    ui.codigoHogar=code;audit('hogar_nuevo','');update();
+  });
+}
+function loginAcomp(btn){
+  var code=($('#lg-code').value||'').trim().toUpperCase(),pin=($('#lg-pin').value||'').trim(),err=$('#e-login');
+  if(!code||!/^\d{6}$/.test(pin)){err.textContent='Escribe tu código y tu PIN de 6 dígitos.';return;}
+  if(!needDb())return;
+  err.textContent='';btn.disabled=true;
+  state.db.collection('acompanantes').where('codigo','==',code).get().then(function(sn){
+    if(sn.empty)return delay(700).then(function(){return {ok:false,tipo:'mal'};});
+    var id=sn.docs[0].id;
+    return verifyCred(id,pin).then(function(r){r.id=id;return r;});
+  }).then(function(r){
+    btn.disabled=false;
+    if(r.ok){audit('acomp_login',r.id);startSession('acompanante',r.id);go('acompanante/agenda');}
+    else{audit('acomp_fail',code.slice(0,12));err.textContent=msgAuth(r);var f=$('#lg-pin');if(f)f.value='';}
+  }).catch(function(e){console.error(e);btn.disabled=false;err.textContent='No se pudo verificar. Revisa tu conexión.';});
+}
+function loginFam(btn){
+  var pin=($('#lg-pin').value||'').trim(),err=$('#e-login');
+  if(!/^\d{6}$/.test(pin)){err.textContent='El PIN tiene 6 dígitos.';return;}
+  if(!needDb())return;
+  err.textContent='';btn.disabled=true;
+  verifyCred('f_'+famHid(),pin).then(function(r){
+    btn.disabled=false;
+    if(r.ok){audit('fam_login','');startSession('familiar');go('familiar/inicio');}
+    else{audit('fam_fail','');err.textContent=msgAuth(r).replace('Código o PIN','PIN');var f=$('#lg-pin');if(f)f.value='';}
+  }).catch(function(e){console.error(e);btn.disabled=false;err.textContent='No se pudo verificar. Revisa tu conexión.';});
+}
+function setupFam(btn){
+  var a=($('#sf-1').value||'').trim(),b=($('#sf-2').value||'').trim(),err=$('#e-login');
+  if(!/^\d{6}$/.test(a)){err.textContent='El PIN debe tener exactamente 6 números.';return;}
+  if(pinDebil(a)){err.textContent='Ese PIN es fácil de adivinar. Evita repetidos y secuencias.';return;}
+  if(a!==b){err.textContent='Los dos PIN no coinciden.';return;}
+  if(!needDb())return;
+  err.textContent='';btn.disabled=true;
+  var code=randPin();
+  var h=randHex(8);Promise.all([makeCred(a),nuevoCodigo()]).then(function(cs){code=cs[1];
+    return Promise.all([state.db.doc('credenciales/f_'+h).set(cs[0]),state.db.doc('codigos/'+code).set({hid:h,creada:nowISO()})]);
+  }).then(function(){
+    btn.disabled=false;ls('cuidalink_fam',h);ui.codigoHogar=code;audit('fam_login','PIN creado');startSession('familiar');go('familiar/inicio');
+  }).catch(function(e){console.error(e);btn.disabled=false;err.textContent='No se pudo guardar. Revisa tu conexión.';});
+}
+function pairAdulto(btn){
+  /* el vínculo se resuelve con pairCheck (código de 6 números → hogar) */
+  var code=($('#pr-code').value||'').trim(),err=$('#e-login');
+  if(!/^\d{6}$/.test(code)){err.textContent='El código tiene 6 números.';return;}
+  if(!needDb())return;
+  err.textContent='';btn.disabled=true;
+  pairCheck(code).then(function(r){
+    btn.disabled=false;
+    if(r.ok){ls('cuidalink_adulto',JSON.stringify({hid:r.hid,code:code}));audit('pareado','');state.pair='ok';render();}
+    else if(r.tipo==='sin'){err.textContent='Tu familiar aún no prepara la vinculación. Pídele que entre como familiar.';}
+    else{audit('pareo_fail','');err.textContent=msgAuth(r).replace('Código o PIN incorrectos','Código incorrecto');var f=$('#pr-code');if(f)f.value='';}
+  }).catch(function(e){console.error(e);btn.disabled=false;err.textContent='No se pudo verificar. Revisa tu conexión.';});
+}
+function borrarTodo(btn){
+  run(btn,function(){
+    var h=famHid();return Promise.all(['visitas','ayuda','checkins','auditoria','codigos'].map(function(c){
+      return state.db.collection(c).where('hid','==',h).get().then(function(s){return Promise.all(s.docs.map(function(d){return state.db.doc(c+'/'+d.id).delete();}));});
+    })).then(function(){return Promise.all([state.db.doc('perfil/'+h).delete(),state.db.doc('credenciales/f_'+h).delete()]);}).then(function(){return true;});
+  },null).then(function(ok){ui.resetAsk=false;if(!ok){update();return;}ls('cuidalink_fam',null);logout('Listo: esta familia quedó en blanco.');});
+}
+
+document.addEventListener('click',function(ev){
+  var el=ev.target.closest('[data-act]');if(!el)return;
+  var act=el.getAttribute('data-act'),id=el.getAttribute('data-id'),v=el.getAttribute('data-v');
+  if(el.type==='submit')return;
+  switch(act){
+    case 'cancelar': ui.cancelId=id;update();break;
+    case 'cancelar-no': ui.cancelId=null;update();break;
+    case 'cancelar-si': ui.cancelId=null;run(el,function(){return state.db.doc('visitas/'+id).update({estado:'cancelada'});},'Visita cancelada.').then(function(){audit('visita_cancelada','');});break;
+    case 'llegue': run(el,function(){return state.db.doc('visitas/'+id).update({estado:'en_curso',llegada:nowISO()});},'Llegada registrada.').then(function(){audit('llegada',session?session.id:'');});break;
+    case 'termine': run(el,function(){return state.db.doc('visitas/'+id).update({estado:'completada',salida:nowISO(),nota:(drafts[id]||'').trim().slice(0,500)});},'Visita completada. Ya aparece en Mis pagos.').then(function(){delete drafts[id];audit('salida',session?session.id:'');});break;
+    case 'bien': run(el,function(){return state.db.collection('checkins').add({hid:hid(),creada:nowISO()});},null).then(function(){ui.msgAdulto='Listo. Tu familia ya sabe que estás bien.';update();});break;
+    case 'ayuda-pedir': ui.confirmAyuda=true;ui.msgAdulto='';update();break;
+    case 'ayuda-no': ui.confirmAyuda=false;update();break;
+    case 'ayuda-si': run(el,function(){return state.db.collection('ayuda').add({hid:hid(),estado:'abierta',creada:nowISO()});},null).then(function(){ui.confirmAyuda=false;ui.msgAdulto='Avisamos a tu familia. Pronto se comunicarán contigo.';update();});break;
+    case 'atender': run(el,function(){return state.db.doc('ayuda/'+id).update({estado:'atendida',atendida:nowISO()});},'Marcada como atendida.');break;
+    case 'perfil-edit': ui.editPerfil=true;update();break;
+    case 'perfil-cancel': ui.editPerfil=false;ui.barrioSel='';update();break;
+    case 'geo': usarUbicacion(el);break;
+    case 'logout': logout('Sesión cerrada.');break;
+    case 'gen-codigo': generarCodigo(el);break;
+    case 'codigo-ok': ui.codigoHogar=null;update();break;
+    case 'desvincular': ls('cuidalink_adulto',null);state.pair='none';render();break;
+    case 'wz-tipo': wz.tipo=v;ui.wizErr='';renderWiz();break;
+    case 'wz-fecha': wz.fecha=v;ui.wizErr='';renderWiz();break;
+    case 'wz-hora': wz.hora=v;ui.wizErr='';renderWiz();break;
+    case 'wz-menos': wz.horas=Math.max(1,wz.horas-1);renderWiz();break;
+    case 'wz-mas': wz.horas=Math.min(12,wz.horas+1);renderWiz();break;
+    case 'wz-acomp': wz.acomp=v;renderWiz();break;
+    case 'wz-mas-acomps': ui.masAcomps=true;renderWiz();break;
+    case 'wz-next': wzNext();break;
+    case 'wz-back': wz.step=Math.max(1,wz.step-1);ui.wizErr='';renderWiz();break;
+    case 'wz-confirmar': confirmarVisita(el);break;
+    case 'reset-ask': ui.resetAsk=true;update();break;
+    case 'reset-no': ui.resetAsk=false;update();break;
+    case 'reset-si': borrarTodo(el);break;
+  }
+});
+document.addEventListener('submit',function(ev){
+  ev.preventDefault();
+  var f=ev.target;
+  var sb=f.querySelector('button[type=submit]');
+  if(f.id==='f-perfil')guardarPerfil(sb);
+  if(f.id==='f-login-ac')loginAcomp(sb);
+  if(f.id==='f-login-fam')loginFam(sb);
+  if(f.id==='f-setup-fam')setupFam(sb);
+  if(f.id==='f-pair')pairAdulto(sb);
+});
+document.addEventListener('input',function(ev){
+  var t=ev.target;
+  if(t.getAttribute&&t.getAttribute('data-draft'))drafts[t.getAttribute('data-draft')]=t.value;
+  if(t.id==='wz-detalle')wz.detalle=t.value;
+  if(t.id==='wz-pedido')wz.pedido=t.value;
+  if(t.getAttribute&&t.getAttribute('data-pin')){var c=t.value.replace(/\D/g,'').slice(0,6);if(c!==t.value)t.value=c;}
+});
+document.addEventListener('change',function(ev){
+  var t=ev.target;if(!t)return;
+  if(t.id==='wz-fecha-in'&&t.value){wz.fecha=t.value;ui.wizErr='';renderWiz();}
+  if(t.id==='wz-hora-in'&&t.value){wz.hora=t.value;ui.wizErr='';renderWiz();}
+  if(t.id==='barrio')ui.barrioSel=t.value;
+});
+['click','keydown','touchstart'].forEach(function(e){document.addEventListener(e,touch,true);});
+window.addEventListener('hashchange',function(){ui.confirmAyuda=false;ui.msgAdulto='';ui.cancelId=null;render();});
+
+/* ===== Base de datos compartida ===== */
+function avisoNuevo(kind,snap){
+  if(route.role!=='familiar'||typeof snap.docChanges!=='function')return;
+  snap.docChanges().forEach(function(ch){
+    if(ch.type!=='added')return;
+    var d=ch.doc.data();if(!d||!d.creada||Date.now()-new Date(d.creada).getTime()>120000)return;
+    var n=nombreAdulto()||'Tu familiar';
+    if(kind==='checkins')toast(n+' avisó que está bien.');
+    else if(d.estado==='abierta')toast(n+' pidió ayuda.','bad');
+  });
+}
+function onErr(k){return function(e){console.error('db',k,e);state.conn='offline';update();};}
+function stopSubs(){
+  unsubs.forEach(function(f){try{f();}catch(e){}});unsubs=[];
+  state.loaded={adulto:false,visitas:false,ayuda:false,checkins:false,acomp:false,audit:false};
+  state.adulto={nombre:'',barrio:''};state.visitas=[];state.ayudas=[];state.checkins=[];state.acomps=[];state.audit=[];
+  first={ayuda:true,checkins:true};
+}
+function startSubs(){
+  stopSubs();
+  var db=state.db,r=route.role,h=hid();
+  if(!db||!r||gateName())return;
+  function ok(k){state.loaded[k]=true;state.conn='live';}
+  function sub(ref,fn,k){unsubs.push(ref.onSnapshot(fn,onErr(k)));}
+  function perfil(){sub(db.doc('perfil/'+h),function(sn){state.adulto=sn.exists?Object.assign({nombre:'',barrio:''},sn.data()):{nombre:'',barrio:''};ok('adulto');update();},'adulto');}
+  function visitas(q){sub(q,function(sn){state.visitas=mapDocs(sn);ok('visitas');update();},'visitas');}
+  function checkins(){sub(db.collection('checkins').where('hid','==',h),function(sn){state.checkins=mapDocs(sn).sort(byCreada).slice(0,30);ok('checkins');if(first.checkins)first.checkins=false;else avisoNuevo('checkins',sn);update();},'checkins');}
+  /* Mínimo privilegio: cada rol solo descarga lo que necesita */
+  if(r==='familiar'){
+    perfil();visitas(db.collection('visitas').where('hid','==',h));checkins();
+    sub(db.collection('acompanantes'),function(sn){state.acomps=mapDocs(sn);ok('acomp');update();},'acomp');
+    sub(db.collection('ayuda').where('hid','==',h),function(sn){state.ayudas=mapDocs(sn).sort(byCreada).slice(0,30);ok('ayuda');if(first.ayuda)first.ayuda=false;else avisoNuevo('ayuda',sn);update();},'ayuda');
+    sub(db.collection('auditoria').where('hid','==',h),function(sn){state.audit=mapDocs(sn).sort(byCreada).slice(0,6);ok('audit');update();},'audit');
+  } else if(r==='adulto'){
+    perfil();visitas(db.collection('visitas').where('hid','==',h));checkins();
+  } else if(r==='acompanante'){
+    var id=session.id;
+    sub(db.doc('acompanantes/'+id),function(sn){state.acomps=sn.exists?[Object.assign({},sn.data(),{id:sn.id})]:[];ok('acomp');update();},'acomp');
+    visitas(db.collection('visitas').where('acompId','==',id));
+  }
+}
+function init(){
+  wzDefaults();
+  render();
+  var p;
+  try{p=(window.claude&&window.claude.use)?window.claude.use('db'):Promise.resolve(null);}catch(e){p=Promise.resolve(null);}
+  Promise.race([Promise.resolve(p),new Promise(function(r){setTimeout(function(){r(null);},10000);})]).then(function(db){
+    if(!db){state.conn='offline';update();return;}
+    state.db=db;state.conn='live';subKey=null;render();
+  }).catch(function(e){console.error(e);state.conn='offline';update();});
+  /* Refresca cuentas regresivas y "hace X min" sin tocar formularios */
+  setInterval(function(){
+    if(session){if(session.exp<=Date.now()){logout('Cerraste sesión por inactividad.');return;}saveSession();}
+    if((route.role+'/'+(route.tab||''))!=='familiar/agendar')update();
+  },15000);
+}
+init();
+})();
+</script>
+
+</body></html>
